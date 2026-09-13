@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>PadelVibes Liga</title>
+<meta name="theme-color" content="#111827">
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f5f7fa;color:#111827}
+header{background:#111827;color:#fff;padding:22px 16px 18px;position:sticky;top:0;z-index:5}.brand{font-size:25px;font-weight:800}.sub{opacity:.75;margin-top:3px;font-size:14px}
+nav{display:flex;gap:8px;padding:10px 12px;background:#fff;border-bottom:1px solid #ddd;position:sticky;top:78px;z-index:4}nav button{flex:1;border:0;border-radius:10px;padding:11px 5px;background:#eef1f5;font-weight:700}nav button.active{background:#111827;color:#fff}
+main{max-width:850px;margin:auto;padding:16px}.card{background:#fff;border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 2px 10px #0000000b}
+h2{margin:0 0 12px;font-size:21px}h3{margin:0 0 9px}.hero{background:#111827;color:#fff;border-radius:18px;padding:20px;margin-bottom:15px}.hero b{font-size:28px}.hero p{opacity:.8;margin-bottom:0}
+.match{border:1px solid #e2e5e9;border-radius:14px;padding:13px;margin:9px 0}.matchtop{font-size:12px;color:#6b7280;margin-bottom:7px;display:flex;justify-content:space-between}
+.teams{display:grid;grid-template-columns:1fr 55px 55px 1fr;gap:6px;align-items:center}.team{font-weight:700}.right{text-align:right}
+input[type=number]{width:52px;padding:9px;border:1px solid #ccd2da;border-radius:8px;text-align:center;font-size:16px}.save{border:0;border-radius:8px;background:#111827;color:#fff;padding:9px 12px;font-weight:700}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 5px;border-bottom:1px solid #eee;text-align:center}th:first-child,td:first-child{text-align:left}
+.badge{display:inline-block;padding:4px 8px;border-radius:20px;background:#eef1f5;font-size:12px}.hidden{display:none}.note{font-size:13px;color:#6b7280;line-height:1.45}
+.adminrow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}.adminrow input{padding:10px;border:1px solid #ccd2da;border-radius:8px}
+@media(max-width:520px){.teams{grid-template-columns:1fr 48px 48px 1fr;font-size:13px}nav button{font-size:12px}}
+</style>
+</head>
+<body>
+<header><div class="brand">🎾 PadelVibes Liga</div><div class="sub">League A · Saison 2026</div></header>
+<nav>
+<button class="active" onclick="showTab('home',this)">Start</button>
+<button onclick="showTab('schedule',this)">Spielplan</button>
+<button onclick="showTab('table',this)">Tabelle</button>
+<button onclick="showTab('admin',this)">Admin</button>
+</nav>
+<main>
+<section id="home"><div class="hero"><b>PadelVibes Liga A</b><p>9 Teams · 9 Spieltage · 36 Begegnungen</p></div>
+<div class="card"><h2>🏆 Aktueller Stand</h2><div id="homeTable"></div></div>
+<div class="card"><h2>ℹ️ So funktioniert's</h2><p class="note">Sieg = 3 Punkte, Niederlage = 0 Punkte. Ergebnisse werden auf diesem Gerät gespeichert. Diese Version ist die einfache Online-Grundversion. Die gemeinsame Datenbank für alle Spieler kommt im nächsten Schritt.</p></div></section>
+<section id="schedule" class="hidden"><div class="card"><h2>📅 Spielplan</h2><div id="scheduleList"></div></div></section>
+<section id="table" class="hidden"><div class="card"><h2>📊 Tabelle</h2><div id="tableBox"></div></div></section>
+<section id="admin" class="hidden"><div class="card"><h2>⚙️ Ergebnisse</h2><p class="note">Trage die Ergebnisse ein. Änderungen werden automatisch auf diesem Gerät gespeichert.</p><div id="adminMatches"></div></div>
+<div class="card"><h2>👥 Teams</h2><div id="teamEditor"></div><button class="save" onclick="saveTeams()">Teamnamen speichern</button></div>
+<div class="card"><button class="save" onclick="resetAll()">Alle Ergebnisse zurücksetzen</button></div></section>
+</main>
+<script>
+const defaultTeams=["Rohrpasser / Reinsch", "Mayer / Heilig", "Duwald / Cziborra", "Scott / Schneider", "Rother / Appel", "Coenen / Fuentes", "Wäckerle / Ziegelhöfer", "Ringer / Hauck", "Kai / Nicolai"];
+const defaultMatches=[{"id": 1, "round": 1, "a": 1, "b": 7, "sa": "", "sb": ""}, {"id": 2, "round": 1, "a": 2, "b": 6, "sa": "", "sb": ""}, {"id": 3, "round": 1, "a": 3, "b": 5, "sa": "", "sb": ""}, {"id": 4, "round": 2, "a": 0, "b": 7, "sa": "", "sb": ""}, {"id": 5, "round": 2, "a": 1, "b": 5, "sa": "", "sb": ""}, {"id": 6, "round": 2, "a": 2, "b": 4, "sa": "", "sb": ""}, {"id": 7, "round": 3, "a": 0, "b": 6, "sa": "", "sb": ""}, {"id": 8, "round": 3, "a": 7, "b": 5, "sa": "", "sb": ""}, {"id": 9, "round": 3, "a": 1, "b": 3, "sa": "", "sb": ""}, {"id": 10, "round": 4, "a": 0, "b": 5, "sa": "", "sb": ""}, {"id": 11, "round": 4, "a": 6, "b": 4, "sa": "", "sb": ""}, {"id": 12, "round": 4, "a": 7, "b": 3, "sa": "", "sb": ""}, {"id": 13, "round": 5, "a": 0, "b": 4, "sa": "", "sb": ""}, {"id": 14, "round": 5, "a": 5, "b": 3, "sa": "", "sb": ""}, {"id": 15, "round": 5, "a": 6, "b": 2, "sa": "", "sb": ""}, {"id": 16, "round": 5, "a": 7, "b": 1, "sa": "", "sb": ""}, {"id": 17, "round": 6, "a": 0, "b": 3, "sa": "", "sb": ""}, {"id": 18, "round": 6, "a": 4, "b": 2, "sa": "", "sb": ""}, {"id": 19, "round": 6, "a": 5, "b": 1, "sa": "", "sb": ""}, {"id": 20, "round": 7, "a": 0, "b": 2, "sa": "", "sb": ""}, {"id": 21, "round": 7, "a": 3, "b": 1, "sa": "", "sb": ""}, {"id": 22, "round": 7, "a": 5, "b": 7, "sa": "", "sb": ""}, {"id": 23, "round": 8, "a": 0, "b": 1, "sa": "", "sb": ""}, {"id": 24, "round": 8, "a": 3, "b": 7, "sa": "", "sb": ""}, {"id": 25, "round": 8, "a": 4, "b": 6, "sa": "", "sb": ""}, {"id": 26, "round": 9, "a": 1, "b": 7, "sa": "", "sb": ""}, {"id": 27, "round": 9, "a": 2, "b": 6, "sa": "", "sb": ""}, {"id": 28, "round": 9, "a": 3, "b": 5, "sa": "", "sb": ""}];
+let teams=JSON.parse(localStorage.getItem('pv_teams')||'null')||defaultTeams;
+let matches=JSON.parse(localStorage.getItem('pv_matches')||'null')||defaultMatches;
+function save(){localStorage.setItem('pv_teams',JSON.stringify(teams));localStorage.setItem('pv_matches',JSON.stringify(matches))}
+function showTab(id,btn){document.querySelectorAll('main>section').forEach(s=>s.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');render()}
+function calc(){let s=teams.map(name=>({name,w:0,l:0,p:0,gf:0,ga:0}));matches.forEach(m=>{if(m.sa!==''&&m.sb!==''&&!isNaN(m.sa)&&!isNaN(m.sb)){let a=+m.sa,b=+m.sb;s[m.a].gf+=a;s[m.a].ga+=b;s[m.b].gf+=b;s[m.b].ga+=a;if(a>b){s[m.a].w++;s[m.a].p+=3;s[m.b].l++}else if(b>a){s[m.b].w++;s[m.b].p+=3;s[m.a].l++}}});return s.sort((a,b)=>b.p-a.p||b.w-a.w||(b.gf-b.ga)-(a.gf-a.ga))}
+function tableHTML(limit){let s=calc(),rows=s.slice(0,limit||s.length).map((x,i)=>`<tr><td><b>${i+1}.</b> ${x.name}</td><td>${x.p}</td><td>${x.w}</td><td>${x.gf-x.ga}</td></tr>`).join('');return `<table><thead><tr><th>Team</th><th>Pkt.</th><th>S</th><th>Diff.</th></tr></thead><tbody>${rows}</tbody></table>`}
+function matchView(m){return `<div class="match"><div class="matchtop"><span>Spiel</span><span>${m.sa!==''&&m.sb!==''?m.sa+' : '+m.sb:'Noch offen'}</span></div><div class="teams"><div class="team">${teams[m.a]}</div><div></div><div></div><div class="team right">${teams[m.b]}</div></div></div>`}
+function render(){
+document.getElementById('homeTable').innerHTML=tableHTML(5);
+document.getElementById('tableBox').innerHTML=tableHTML();
+document.getElementById('scheduleList').innerHTML=[...new Set(matches.map(m=>m.round))].map(r=>`<h3>Spieltag ${r}</h3>`+matches.filter(m=>m.round===r).map(matchView).join('')).join('');
+document.getElementById('adminMatches').innerHTML=matches.map(m=>`<div class="match"><div class="matchtop"><span>Spieltag ${m.round}</span><span class="badge">${m.sa!==''&&m.sb!==''?'gespielt':'offen'}</span></div><div class="teams"><div class="team">${teams[m.a]}</div><input type="number" min="0" max="99" value="${m.sa}" onchange="score(${m.id},'sa',this.value)"><input type="number" min="0" max="99" value="${m.sb}" onchange="score(${m.id},'sb',this.value)"><div class="team right">${teams[m.b]}</div></div></div>`).join('');
+document.getElementById('teamEditor').innerHTML=teams.map((t,i)=>`<div class="adminrow"><input id="team${i}" value="${t.replace(/"/g,'&quot;')}"></div>`).join('');
+}
+function score(id,key,val){let m=matches.find(x=>x.id===id);m[key]=val===''?'':Math.max(0,parseInt(val||0));save();render()}
+function saveTeams(){teams=teams.map((_,i)=>document.getElementById('team'+i).value.trim()||('Team '+(i+1)));save();render();alert('Teamnamen gespeichert.')}
+function resetAll(){if(confirm('Wirklich alle Ergebnisse löschen?')){matches=defaultMatches.map(x=>({...x}));save();render()}}
+render();
+</script>
+</body>
+</html>
