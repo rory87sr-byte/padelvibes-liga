@@ -9,7 +9,7 @@
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 header{padding:20px 16px 14px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(11,13,15,.96);backdrop-filter:blur(12px);z-index:5}
 .brand{font-size:24px;font-weight:800}.brand span{color:var(--accent)}.sub{color:var(--muted);font-size:13px;margin-top:3px}
-nav{display:flex;gap:8px;padding:12px;overflow:auto;position:sticky;top:76px;background:var(--bg);z-index:4}
+nav{display:flex;gap:8px;padding:12px 12px 8px;overflow:auto;position:sticky;top:76px;background:var(--bg);z-index:4}
 nav button,.btn{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:12px;padding:10px 13px;font-weight:700}
 nav button.active,.btn.primary{background:var(--accent);color:#111;border-color:var(--accent)}
 main{max-width:850px;margin:auto;padding:10px 14px 40px}.page{display:none}.page.active{display:block}
@@ -21,469 +21,123 @@ h2{margin:4px 0 14px;font-size:21px}h3{margin:0 0 10px}.muted{color:var(--muted)
 select,input{width:100%;padding:11px;border-radius:10px;border:1px solid var(--line);background:#0d1012;color:var(--text);font-size:15px}
 label{display:block;font-size:13px;color:var(--muted);margin:9px 0 5px}
 table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:10px 6px;border-bottom:1px solid var(--line);text-align:left}th{text-transform:uppercase;font-size:11px;color:var(--muted)}
+.notice{padding:11px 12px;border-radius:10px;background:#11191a;border:1px solid #203a30;color:#b8e8ce;margin:10px 0}.danger{background:#1b1212;border-color:#4b2424;color:#ffb3b3}
 .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.hidden{display:none!important}
 @media(max-width:560px){.grid{grid-template-columns:1fr}.match{grid-template-columns:1fr 75px 1fr}.score{min-width:75px;font-size:13px}}
 </style>
 </head>
 <body>
-
 <header>
-<div class="brand">🎾 Padel<span>Vibes</span> Liga</div>
-<div class="sub">League A · online</div>
+  <div class="brand">🎾 Padel<span>Vibes</span> Liga</div>
+  <div class="sub">League A · online</div>
 </header>
-
 <nav id="nav">
-<button data-page="home" class="active">Home</button>
-<button data-page="matches">Spielplan</button>
-<button data-page="table">Tabelle</button>
-<button data-page="admin">Admin</button>
+<button data-page="home" class="active">Home</button><button data-page="matches">Spielplan</button><button data-page="table">Tabelle</button><button data-page="admin">Admin</button>
 </nav>
-
 <main>
-
 <section id="home" class="page active">
-<div class="card">
-<h2>League A</h2>
-<div class="muted">9 Teams · 9 Spieltage · 36 Spiele</div>
-</div>
-
-<div class="grid">
-<div class="card">
-<div class="small">Teams</div>
-<div class="stat">9</div>
-</div>
-<div class="card">
-<div class="small">Spiele</div>
-<div class="stat" id="played">0 / 36</div>
-</div>
-</div>
-
-<div class="card">
-<h3>Nächste Spiele</h3>
-<div id="homeMatches" class="muted">Lade Daten…</div>
-</div>
+  <div class="card"><h2>League A</h2><div class="muted">9 Teams · 9 Spieltage · 36 Spiele</div></div>
+  <div class="grid"><div class="card"><div class="small">Teams</div><div class="stat">9</div></div><div class="card"><div class="small">Spiele</div><div class="stat" id="played">0 / 36</div></div></div>
+  <div class="card"><h3>Nächste Spiele</h3><div id="homeMatches" class="muted">Lade Daten…</div></div>
 </section>
 
 <section id="matches" class="page">
-<h2>Spielplan</h2>
-<div id="matchdays">Lade Daten…</div>
+  <h2>Spielplan</h2><div id="matchdays">Lade Daten…</div>
 </section>
 
 <section id="table" class="page">
-<h2>Tabelle</h2>
-<div class="card">
-<div style="overflow:auto">
-<table>
-<thead>
-<tr><th>#</th><th>Team</th><th>Sp</th><th>S</th><th>N</th><th>Pkt</th></tr>
-</thead>
-<tbody id="standings"></tbody>
-</table>
-</div>
-</div>
+  <h2>Tabelle</h2>
+  <div class="card"><div style="overflow:auto"><table><thead><tr><th>#</th><th>Team</th><th>Sp</th><th>S</th><th>N</th><th>Pkt</th></tr></thead><tbody id="standings"></tbody></table></div></div>
 </section>
 
 <section id="admin" class="page">
-
-<div id="loginBox" class="card">
-<h2>Admin Login</h2>
-<div class="muted">Nur der freigegebene Admin kann Teams und Ergebnisse ändern.</div>
-
-<label>E-Mail</label>
-<input id="email" type="email" autocomplete="username">
-
-<label>Passwort</label>
-<input id="password" type="password" autocomplete="current-password">
-
-<div class="actions">
-<button class="btn primary" id="loginBtn">Einloggen</button>
-</div>
-
-<div id="loginMsg" class="small"></div>
-</div>
-
-<div id="adminBox" class="hidden">
-
-<div class="card">
-<h2>Teams bearbeiten</h2>
-<div class="muted">Änderungen werden automatisch im gesamten Spielplan und in der Tabelle übernommen.</div>
-<div id="teamsAdmin"></div>
-</div>
-
-<div class="card">
-<h2>Ergebnisse</h2>
-<div class="muted">Score z.B. <b>6:0 6:1</b> oder <b>6:4 3:6 10:8</b>.</div>
-<div id="resultsAdmin"></div>
-</div>
-
-<div class="actions">
-<button class="btn" id="logoutBtn">Ausloggen</button>
-</div>
-
-</div>
+  <div id="loginBox" class="card">
+    <h2>Admin Login</h2><div class="muted">Nur der freigegebene Admin kann Teams und Ergebnisse ändern.</div>
+    <label>E-Mail</label><input id="email" type="email" autocomplete="username">
+    <label>Passwort</label><input id="password" type="password" autocomplete="current-password">
+    <div class="actions"><button class="btn primary" id="loginBtn">Einloggen</button></div>
+    <div id="loginMsg" class="small"></div>
+  </div>
+  <div id="adminBox" class="hidden">
+    <div class="card"><h2>Teams bearbeiten</h2><div class="muted">Änderungen werden automatisch im gesamten Spielplan und in der Tabelle übernommen.</div><div id="teamsAdmin"></div></div>
+    <div class="card"><h2>Ergebnisse</h2><div class="muted">Score z.B. <b>6:0 6:1</b> oder <b>6:4 3:6 10:8</b>.</div><div id="resultsAdmin"></div></div>
+    <div class="actions"><button class="btn" id="logoutBtn">Ausloggen</button></div>
+  </div>
 </section>
-
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script>
 const SUPABASE_URL="https://leouoxzaorxnhjjvliyt.supabase.co";
 const SUPABASE_KEY="sb_publishable_PyiqqmUKl_ejecuWYswVsw_tf8qdOzy";
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-
 let teams=[],matches=[],league=null,isAdmin=false;
 
 const nav=[...document.querySelectorAll("nav button")];
-
-nav.forEach(b=>b.onclick=()=>{
-nav.forEach(x=>x.classList.remove("active"));
-b.classList.add("active");
-document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-document.getElementById(b.dataset.page).classList.add("active");
-if(b.dataset.page==="admin") refreshAdmin();
-});
+nav.forEach(b=>b.onclick=()=>{nav.forEach(x=>x.classList.remove("active"));b.classList.add("active");document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));document.getElementById(b.dataset.page).classList.add("active");if(b.dataset.page==="admin") refreshAdmin()});
 
 async function load(){
-
-const {data:l,error:le}=await sb
-.from("leagues")
-.select("*")
-.eq("name","League A")
-.single();
-
-if(le){
-console.error(le);
-return;
+ const {data:l,error:le}=await sb.from("leagues").select("*").eq("name","League A").single(); if(le){console.error(le);return}
+ league=l;
+ const {data:t,error:te}=await sb.from("teams").select("*").eq("league_id",l.id).order("position"); if(te){console.error(te);return}
+ teams=t||[];
+ const {data:m,error:me}=await sb.from("matches").select("*").eq("league_id",l.id).order("matchday").order("created_at"); if(me){console.error(me);return}
+ matches=m||[];
+ render();
 }
-
-league=l;
-
-const {data:t,error:te}=await sb
-.from("teams")
-.select("*")
-.eq("league_id",l.id)
-.order("position");
-
-if(te){
-console.error(te);
-return;
-}
-
-teams=t||[];
-
-const {data:m,error:me}=await sb
-.from("matches")
-.select("*")
-.eq("league_id",l.id)
-.order("matchday")
-.order("created_at");
-
-if(me){
-console.error(me);
-return;
-}
-
-matches=m||[];
-
-render();
-}
-
-function tn(id){
-return teams.find(t=>t.id===id)?.name||"Unbekannt";
-}
-
+function tn(id){return teams.find(t=>t.id===id)?.name||"Unbekannt"}
 function render(){
+ const played=matches.filter(m=>m.winner_team_id).length;document.getElementById("played").textContent=played+" / "+matches.length;
+ const upcoming=matches.filter(m=>!m.winner_team_id).slice(0,4);
+ document.getElementById("homeMatches").innerHTML=upcoming.length?upcoming.map(m=>`<div class="match"><div class="team">${esc(tn(m.home_team_id))}</div><div class="score">ST ${m.matchday}</div><div class="team away">${esc(tn(m.away_team_id))}</div></div>`).join(""):"Alle Spiele sind eingetragen.";
+ const days={};matches.forEach(m=>(days[m.matchday]??=[]).push(m));
+ document.getElementById("matchdays").innerHTML=Object.entries(days).map(([d,ms])=>`<div class="card"><h3>Spieltag ${d}</h3>${ms.map(matchHtml).join("")}</div>`).join("");
+ const rows=teams.map(t=>{const mm=matches.filter(m=>m.home_team_id===t.id||m.away_team_id===t.id);const wins=mm.filter(m=>m.winner_team_id===t.id).length;const losses=mm.filter(m=>m.winner_team_id&&m.winner_team_id!==t.id).length;return {...t,played:wins+losses,wins,losses,points:wins*3}}).sort((a,b)=>b.points-a.points||b.wins-a.wins||a.position-b.position);
+ document.getElementById("standings").innerHTML=rows.map((t,i)=>`<tr><td>${i+1}</td><td><b>${esc(t.name)}</b></td><td>${t.played}</td><td>${t.wins}</td><td>${t.losses}</td><td><b>${t.points}</b></td></tr>`).join("");
+}
+function matchHtml(m){return `<div class="match"><div class="team ${m.winner_team_id===m.home_team_id?'win':''}">${esc(tn(m.home_team_id))}</div><div class="score">${m.score_text?esc(m.score_text):"–"}</div><div class="team away ${m.winner_team_id===m.away_team_id?'win':''}">${esc(tn(m.away_team_id))}</div></div>`}
 
-const played=matches.filter(m=>m.winner_team_id).length;
-
-document.getElementById("played").textContent=
-played+" / "+matches.length;
-
-const upcoming=matches
-.filter(m=>!m.winner_team_id)
-.slice(0,4);
-
-document.getElementById("homeMatches").innerHTML=
-upcoming.length
-?upcoming.map(m=>`
-<div class="match">
-<div class="team">${esc(tn(m.home_team_id))}</div>
-<div class="score">ST ${m.matchday}</div>
-<div class="team away">${esc(tn(m.away_team_id))}</div>
-</div>`).join("")
-:"Alle Spiele sind eingetragen.";
-
-const days={};
-
-matches.forEach(m=>(days[m.matchday]??=[]).push(m));
-
-document.getElementById("matchdays").innerHTML=
-Object.entries(days).map(([d,ms])=>`
-<div class="card">
-<h3>Spieltag ${d}</h3>
-${ms.map(matchHtml).join("")}
-</div>`).join("");
-
-const rows=teams.map(t=>{
-
-const mm=matches.filter(
-m=>m.home_team_id===t.id||m.away_team_id===t.id
-);
-
-const wins=mm.filter(
-m=>m.winner_team_id===t.id
-).length;
-
-const losses=mm.filter(
-m=>m.winner_team_id&&m.winner_team_id!==t.id
-).length;
-
-return {
-...t,
-played:wins+losses,
-wins,
-losses,
-points:wins*3
-};
-
-}).sort(
-(a,b)=>b.points-a.points||
-b.wins-a.wins||
-a.position-b.position
-);
-
-document.getElementById("standings").innerHTML=
-rows.map((t,i)=>`
-<tr>
-<td>${i+1}</td>
-<td><b>${esc(t.name)}</b></td>
-<td>${t.played}</td>
-<td>${t.wins}</td>
-<td>${t.losses}</td>
-<td><b>${t.points}</b></td>
-</tr>`).join("");
+function scoreOptions(current){
+ const options=[
+  "",
+  "6:0 6:0","6:0 6:1","6:0 6:2","6:0 6:3","6:0 6:4","6:0 6:5","6:0 7:6",
+  "6:1 6:0","6:1 6:1","6:1 6:2","6:1 6:3","6:1 6:4","6:1 6:5","6:1 7:6",
+  "6:2 6:0","6:2 6:1","6:2 6:2","6:2 6:3","6:2 6:4","6:2 6:5","6:2 7:6",
+  "6:3 6:0","6:3 6:1","6:3 6:2","6:3 6:3","6:3 6:4","6:3 6:5","6:3 7:6",
+  "6:4 6:0","6:4 6:1","6:4 6:2","6:4 6:3","6:4 6:4","6:4 6:5","6:4 7:6",
+  "6:5 6:0","6:5 6:1","6:5 6:2","6:5 6:3","6:5 6:4","6:5 6:5","6:5 7:6",
+  "7:6 6:0","7:6 6:1","7:6 6:2","7:6 6:3","7:6 6:4","7:6 6:5",
+  "6:0 3:6 10:8","6:0 3:6 10:7","6:0 4:6 10:8","6:0 4:6 10:7","6:0 5:7 10:8",
+  "6:1 4:6 10:8","6:1 4:6 10:7","6:1 5:7 10:8","6:2 4:6 10:8","6:2 5:7 10:8",
+  "6:3 4:6 10:8","6:3 5:7 10:8","6:4 4:6 10:8","6:4 5:7 10:8",
+  "4:6 6:0 10:8","4:6 6:0 10:7","4:6 6:1 10:8","4:6 6:1 10:7","5:7 6:0 10:8",
+  "5:7 6:1 10:8","5:7 6:2 10:8","3:6 6:0 10:8","3:6 6:1 10:8","3:6 6:2 10:8"
+ ];
+ const seen=new Set();
+ if(current && !options.includes(current)) options.push(current);
+ return options.filter(x=>{if(seen.has(x)) return false; seen.add(x); return true;}).map(x=>`<option value="${esc(x)}" ${x===current?'selected':''}>${x||'Ergebnis auswählen'}</option>`).join('');
 }
 
-function matchHtml(m){
-
-return `
-<div class="match">
-<div class="team ${m.winner_team_id===m.home_team_id?'win':''}">
-${esc(tn(m.home_team_id))}
-</div>
-
-<div class="score">
-${m.score_text?esc(m.score_text):"–"}
-</div>
-
-<div class="team away ${m.winner_team_id===m.away_team_id?'win':''}">
-${esc(tn(m.away_team_id))}
-</div>
-</div>`;
-}
-
-function esc(s){
-
-return String(s).replace(
-/[&<>"']/g,
-c=>({
-"&":"&amp;",
-"<":"&lt;",
-">":"&gt;",
-"\"":"&quot;",
-"'":"&#39;"
-}[c])
-);
-}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}
 
 async function refreshAdmin(){
-
-const {data:{user}}=await sb.auth.getUser();
-
-if(!user){
-
-isAdmin=false;
-
-document.getElementById("loginBox")
-.classList.remove("hidden");
-
-document.getElementById("adminBox")
-.classList.add("hidden");
-
-return;
+ const {data:{user}}=await sb.auth.getUser();
+ if(!user){isAdmin=false;document.getElementById("loginBox").classList.remove("hidden");document.getElementById("adminBox").classList.add("hidden");return}
+ const {data:p}=await sb.from("profiles").select("role").eq("id",user.id).single();
+ isAdmin=p?.role==="admin";
+ document.getElementById("loginBox").classList.toggle("hidden",isAdmin);document.getElementById("adminBox").classList.toggle("hidden",!isAdmin);
+ if(isAdmin){
+  document.getElementById("teamsAdmin").innerHTML=teams.map(t=>`<div class="card"><label>Team ${t.position}</label><input data-team="${t.id}" value="${esc(t.name)}"><div class="actions"><button class="btn primary saveTeam" data-id="${t.id}">Speichern</button></div></div>`).join("");
+  document.querySelectorAll(".saveTeam").forEach(b=>b.onclick=()=>saveTeam(b.dataset.id));
+  document.getElementById("resultsAdmin").innerHTML=matches.map(m=>`<div class="card"><div><b>Spieltag ${m.matchday}</b> · ${esc(tn(m.home_team_id))} – ${esc(tn(m.away_team_id))}</div><label>Ergebnis</label><select id="score-${m.id}">${scoreOptions(m.score_text)}</select><label>Sieger</label><select id="winner-${m.id}"><option value="">Noch offen</option><option value="${m.home_team_id}" ${m.winner_team_id===m.home_team_id?"selected":""}>${esc(tn(m.home_team_id))}</option><option value="${m.away_team_id}" ${m.winner_team_id===m.away_team_id?"selected":""}>${esc(tn(m.away_team_id))}</option></select><div class="actions"><button class="btn primary saveResult" data-id="${m.id}">Ergebnis speichern</button></div></div>`).join("");
+  document.querySelectorAll(".saveResult").forEach(b=>b.onclick=()=>saveResult(b.dataset.id));
+ }
 }
-
-const {data:p}=await sb
-.from("profiles")
-.select("role")
-.eq("id",user.id)
-.single();
-
-isAdmin=p?.role==="admin";
-
-document.getElementById("loginBox")
-.classList.toggle("hidden",isAdmin);
-
-document.getElementById("adminBox")
-.classList.toggle("hidden",!isAdmin);
-
-if(isAdmin){
-
-document.getElementById("teamsAdmin").innerHTML=
-teams.map(t=>`
-<div class="card">
-<label>Team ${t.position}</label>
-<input data-team="${t.id}" value="${esc(t.name)}">
-<div class="actions">
-<button class="btn primary saveTeam" data-id="${t.id}">
-Speichern
-</button>
-</div>
-</div>`).join("");
-
-document.querySelectorAll(".saveTeam")
-.forEach(b=>b.onclick=()=>saveTeam(b.dataset.id));
-
-document.getElementById("resultsAdmin").innerHTML=
-matches.map(m=>`
-<div class="card">
-
-<div>
-<b>Spieltag ${m.matchday}</b> ·
-${esc(tn(m.home_team_id))} –
-${esc(tn(m.away_team_id))}
-</div>
-
-<label>Ergebnis</label>
-
-<input
-id="score-${m.id}"
-value="${esc(m.score_text||"")}"
-placeholder="6:0 6:1">
-
-<label>Sieger</label>
-
-<select id="winner-${m.id}">
-
-<option value="">Noch offen</option>
-
-<option
-value="${m.home_team_id}"
-${m.winner_team_id===m.home_team_id?"selected":""}>
-${esc(tn(m.home_team_id))}
-</option>
-
-<option
-value="${m.away_team_id}"
-${m.winner_team_id===m.away_team_id?"selected":""}>
-${esc(tn(m.away_team_id))}
-</option>
-
-</select>
-
-<div class="actions">
-<button class="btn primary saveResult" data-id="${m.id}">
-Ergebnis speichern
-</button>
-</div>
-
-</div>`).join("");
-
-document.querySelectorAll(".saveResult")
-.forEach(b=>b.onclick=()=>saveResult(b.dataset.id));
-}
-}
-
-async function saveTeam(id){
-
-const input=document.querySelector(`[data-team="${id}"]`);
-
-const name=input.value.trim();
-
-if(!name){
-alert("Name fehlt.");
-return;
-}
-
-const {error}=await sb
-.from("teams")
-.update({name})
-.eq("id",id);
-
-if(error){
-alert(error.message);
-return;
-}
-
-await load();
-await refreshAdmin();
-
-alert("Teamname gespeichert.");
-}
-
-async function saveResult(id){
-
-const score=document
-.getElementById("score-"+id)
-.value.trim();
-
-const winner=document
-.getElementById("winner-"+id)
-.value||null;
-
-const {error}=await sb
-.from("matches")
-.update({
-score_text:score||null,
-winner_team_id:winner,
-home_score:winner?1:null,
-away_score:winner?1:null,
-updated_at:new Date().toISOString()
-})
-.eq("id",id);
-
-if(error){
-alert(error.message);
-return;
-}
-
-await load();
-await refreshAdmin();
-
-alert("Ergebnis gespeichert.");
-}
-
-document.getElementById("loginBtn").onclick=async()=>{
-
-const email=document
-.getElementById("email")
-.value.trim();
-
-const password=document
-.getElementById("password")
-.value;
-
-const {error}=await sb.auth.signInWithPassword({
-email,
-password
-});
-
-document.getElementById("loginMsg")
-.textContent=error?error.message:"Eingeloggt.";
-
-if(!error) refreshAdmin();
-};
-
-document.getElementById("logoutBtn").onclick=async()=>{
-await sb.auth.signOut();
-refreshAdmin();
-};
-
+async function saveTeam(id){const input=document.querySelector(`[data-team="${id}"]`);const name=input.value.trim();if(!name)return alert("Name fehlt.");const {error}=await sb.from("teams").update({name}).eq("id",id);if(error)return alert(error.message);await load();await refreshAdmin();alert("Teamname gespeichert.");}
+async function saveResult(id){const score=document.getElementById("score-"+id).value.trim();const winner=document.getElementById("winner-"+id).value||null;const {error}=await sb.from("matches").update({score_text:score||null,winner_team_id:winner,home_score:winner?1:null,away_score:winner?1:null,updated_at:new Date().toISOString()}).eq("id",id);if(error)return alert(error.message);await load();await refreshAdmin();alert("Ergebnis gespeichert.");}
+document.getElementById("loginBtn").onclick=async()=>{const email=document.getElementById("email").value.trim(),password=document.getElementById("password").value;const {error}=await sb.auth.signInWithPassword({email,password});document.getElementById("loginMsg").textContent=error?error.message:"Eingeloggt.";if(!error)refreshAdmin()};
+document.getElementById("logoutBtn").onclick=async()=>{await sb.auth.signOut();refreshAdmin()};
 sb.auth.onAuthStateChange(()=>refreshAdmin());
-
 load();
 </script>
-
-</body>
-</html>
+</body></html>
