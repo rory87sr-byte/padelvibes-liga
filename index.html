@@ -1,4 +1,5 @@
-<!doctype html>
+
+<<!doctype html>
 <html lang="de">
 <head>
 <meta charset="utf-8">
@@ -96,28 +97,6 @@ function render(){
  document.getElementById("standings").innerHTML=rows.map((t,i)=>`<tr><td>${i+1}</td><td><b>${esc(t.name)}</b></td><td>${t.played}</td><td>${t.wins}</td><td>${t.losses}</td><td><b>${t.points}</b></td></tr>`).join("");
 }
 function matchHtml(m){return `<div class="match"><div class="team ${m.winner_team_id===m.home_team_id?'win':''}">${esc(tn(m.home_team_id))}</div><div class="score">${m.score_text?esc(m.score_text):"–"}</div><div class="team away ${m.winner_team_id===m.away_team_id?'win':''}">${esc(tn(m.away_team_id))}</div></div>`}
-
-function scoreOptions(current){
- const options=[
-  "",
-  "6:0 6:0","6:0 6:1","6:0 6:2","6:0 6:3","6:0 6:4","6:0 6:5","6:0 7:6",
-  "6:1 6:0","6:1 6:1","6:1 6:2","6:1 6:3","6:1 6:4","6:1 6:5","6:1 7:6",
-  "6:2 6:0","6:2 6:1","6:2 6:2","6:2 6:3","6:2 6:4","6:2 6:5","6:2 7:6",
-  "6:3 6:0","6:3 6:1","6:3 6:2","6:3 6:3","6:3 6:4","6:3 6:5","6:3 7:6",
-  "6:4 6:0","6:4 6:1","6:4 6:2","6:4 6:3","6:4 6:4","6:4 6:5","6:4 7:6",
-  "6:5 6:0","6:5 6:1","6:5 6:2","6:5 6:3","6:5 6:4","6:5 6:5","6:5 7:6",
-  "7:6 6:0","7:6 6:1","7:6 6:2","7:6 6:3","7:6 6:4","7:6 6:5",
-  "6:0 3:6 10:8","6:0 3:6 10:7","6:0 4:6 10:8","6:0 4:6 10:7","6:0 5:7 10:8",
-  "6:1 4:6 10:8","6:1 4:6 10:7","6:1 5:7 10:8","6:2 4:6 10:8","6:2 5:7 10:8",
-  "6:3 4:6 10:8","6:3 5:7 10:8","6:4 4:6 10:8","6:4 5:7 10:8",
-  "4:6 6:0 10:8","4:6 6:0 10:7","4:6 6:1 10:8","4:6 6:1 10:7","5:7 6:0 10:8",
-  "5:7 6:1 10:8","5:7 6:2 10:8","3:6 6:0 10:8","3:6 6:1 10:8","3:6 6:2 10:8"
- ];
- const seen=new Set();
- if(current && !options.includes(current)) options.push(current);
- return options.filter(x=>{if(seen.has(x)) return false; seen.add(x); return true;}).map(x=>`<option value="${esc(x)}" ${x===current?'selected':''}>${x||'Ergebnis auswählen'}</option>`).join('');
-}
-
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}
 
 async function refreshAdmin(){
@@ -129,7 +108,7 @@ async function refreshAdmin(){
  if(isAdmin){
   document.getElementById("teamsAdmin").innerHTML=teams.map(t=>`<div class="card"><label>Team ${t.position}</label><input data-team="${t.id}" value="${esc(t.name)}"><div class="actions"><button class="btn primary saveTeam" data-id="${t.id}">Speichern</button></div></div>`).join("");
   document.querySelectorAll(".saveTeam").forEach(b=>b.onclick=()=>saveTeam(b.dataset.id));
-  document.getElementById("resultsAdmin").innerHTML=matches.map(m=>`<div class="card"><div><b>Spieltag ${m.matchday}</b> · ${esc(tn(m.home_team_id))} – ${esc(tn(m.away_team_id))}</div><label>Ergebnis</label><select id="score-${m.id}">${scoreOptions(m.score_text)}</select><label>Sieger</label><select id="winner-${m.id}"><option value="">Noch offen</option><option value="${m.home_team_id}" ${m.winner_team_id===m.home_team_id?"selected":""}>${esc(tn(m.home_team_id))}</option><option value="${m.away_team_id}" ${m.winner_team_id===m.away_team_id?"selected":""}>${esc(tn(m.away_team_id))}</option></select><div class="actions"><button class="btn primary saveResult" data-id="${m.id}">Ergebnis speichern</button></div></div>`).join("");
+  document.getElementById("resultsAdmin").innerHTML=matches.map(m=>`<div class="card"><div><b>Spieltag ${m.matchday}</b> · ${esc(tn(m.home_team_id))} – ${esc(tn(m.away_team_id))}</div><label>Ergebnis</label><input id="score-${m.id}" value="${esc(m.score_text||"")}" placeholder="6:0 6:1"><label>Sieger</label><select id="winner-${m.id}"><option value="">Noch offen</option><option value="${m.home_team_id}" ${m.winner_team_id===m.home_team_id?"selected":""}>${esc(tn(m.home_team_id))}</option><option value="${m.away_team_id}" ${m.winner_team_id===m.away_team_id?"selected":""}>${esc(tn(m.away_team_id))}</option></select><div class="actions"><button class="btn primary saveResult" data-id="${m.id}">Ergebnis speichern</button></div></div>`).join("");
   document.querySelectorAll(".saveResult").forEach(b=>b.onclick=()=>saveResult(b.dataset.id));
  }
 }
