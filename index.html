@@ -6,80 +6,1279 @@
 <title>PadelVibes Liga</title>
 <style>
 :root{--bg:#0b0d0f;--card:#15181b;--line:#2a2f33;--text:#f5f7f8;--muted:#9ca3a8;--accent:#f28c28;--green:#35d07f;--red:#e85d5d;--yellow:#e7c75b;--gray:#4d555b}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-header{padding:18px 16px 12px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(11,13,15,.97);backdrop-filter:blur(12px);z-index:5}.brand{font-size:24px;font-weight:800}.brand span{color:var(--accent)}.sub{color:var(--muted);font-size:13px;margin-top:3px}
-.leagues{display:flex;gap:8px;margin-top:13px}.leagueBtn{flex:1;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:12px;padding:10px;font-weight:800}.leagueBtn.active{background:var(--accent);color:#111;border-color:var(--accent)}
-nav{display:flex;gap:8px;padding:12px 12px 8px;overflow:auto;position:sticky;top:125px;background:var(--bg);z-index:4}nav button,.btn{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:12px;padding:10px 13px;font-weight:700}nav button.active,.btn.primary{background:var(--accent);color:#111;border-color:var(--accent)}
-main{max-width:850px;margin:auto;padding:10px 14px 40px}.page{display:none}.page.active{display:block}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin:10px 0}h2{margin:4px 0 14px;font-size:21px}h3{margin:0 0 10px}.muted{color:var(--muted)}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{font-size:25px;font-weight:800}.small{font-size:12px;color:var(--muted)}
-.match{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;padding:13px 0;border-bottom:1px solid var(--line)}.match:last-child{border-bottom:0}.team{font-weight:700}.away{text-align:right}.score{font-weight:800;min-width:90px;text-align:center}.win{color:var(--green)}
-select,input{width:100%;padding:11px;border-radius:10px;border:1px solid var(--line);background:#0d1012;color:var(--text);font-size:15px}label{display:block;font-size:13px;color:var(--muted);margin:9px 0 5px}
-table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:10px 6px;border-bottom:1px solid var(--line);text-align:left}th{text-transform:uppercase;font-size:11px;color:var(--muted)}tbody tr.playoff{background:rgba(53,208,127,.13)}tbody tr.promotion{background:rgba(53,208,127,.13)}tbody tr.relegation{background:rgba(232,93,93,.13)}tbody tr.bottom{background:rgba(77,85,91,.18)}tbody tr.playoff td:first-child,tbody tr.promotion td:first-child{border-left:4px solid var(--green)}tbody tr.relegation td:first-child{border-left:4px solid var(--red)}tbody tr.bottom td:first-child{border-left:4px solid var(--gray)}
-.players{font-size:11px;color:var(--muted);margin-top:3px}.legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.legend span{font-size:11px;padding:5px 8px;border-radius:8px;border:1px solid var(--line)}.legend .lgreen{background:rgba(53,208,127,.13);border-color:#286846}.legend .lred{background:rgba(232,93,93,.13);border-color:#6d3030}.legend .lgray{background:rgba(77,85,91,.18)}
-.notice{padding:11px 12px;border-radius:10px;background:#11191a;border:1px solid #203a30;color:#b8e8ce;margin:10px 0}.danger{background:#1b1212;border-color:#4b2424;color:#ffb3b3}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.hidden{display:none!important}
-@media(max-width:560px){.grid{grid-template-columns:1fr}.match{grid-template-columns:1fr 75px 1fr}.score{min-width:75px;font-size:13px}.leagues{position:relative}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{padding:18px 16px 12px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(11,13,15,.97);backdrop-filter:blur(12px);z-index:5}
+.brand{font-size:24px;font-weight:800}.brand span{color:var(--accent)}
+.sub{color:var(--muted);font-size:13px;margin-top:3px}
+.leagues{display:flex;gap:8px;margin-top:13px}
+.leagueBtn{flex:1;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:12px;padding:10px;font-weight:800}
+.leagueBtn.active{background:var(--accent);color:#111;border-color:var(--accent)}
+nav{display:flex;gap:8px;padding:12px 12px 8px;overflow:auto;position:sticky;top:125px;background:var(--bg);z-index:4}
+nav button,.btn{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:12px;padding:10px 13px;font-weight:700;white-space:nowrap}
+nav button.active,.btn.primary{background:var(--accent);color:#111;border-color:var(--accent)}
+main{max-width:850px;margin:auto;padding:10px 14px 40px}
+.page{display:none}.page.active{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin:10px 0}
+h2{margin:4px 0 14px;font-size:21px}h3{margin:0 0 10px}.muted{color:var(--muted)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{font-size:25px;font-weight:800}.small{font-size:12px;color:var(--muted)}
+.match{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;padding:13px 0;border-bottom:1px solid var(--line)}
+.match:last-child{border-bottom:0}.team{font-weight:700}.away{text-align:right}
+.score{font-weight:800;min-width:90px;text-align:center}.win{color:var(--green)}
+select,input,textarea{width:100%;padding:11px;border-radius:10px;border:1px solid var(--line);background:#0d1012;color:var(--text);font-size:15px;font-family:inherit}
+textarea{min-height:90px;resize:vertical}
+label{display:block;font-size:13px;color:var(--muted);margin:9px 0 5px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:10px 6px;border-bottom:1px solid var(--line);text-align:left}
+th{text-transform:uppercase;font-size:11px;color:var(--muted)}
+tbody tr.playoff{background:rgba(53,208,127,.13)}
+tbody tr.promotion{background:rgba(53,208,127,.13)}
+tbody tr.relegation{background:rgba(232,93,93,.13)}
+tbody tr.bottom{background:rgba(77,85,91,.18)}
+tbody tr.playoff td:first-child,tbody tr.promotion td:first-child{border-left:4px solid var(--green)}
+tbody tr.relegation td:first-child{border-left:4px solid var(--red)}
+tbody tr.bottom td:first-child{border-left:4px solid var(--gray)}
+.players{font-size:11px;color:var(--muted);margin-top:3px}
+.legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.legend span{font-size:11px;padding:5px 8px;border-radius:8px;border:1px solid var(--line)}
+.legend .lgreen{background:rgba(53,208,127,.13);border-color:#286846}
+.legend .lred{background:rgba(232,93,93,.13);border-color:#6d3030}
+.legend .lgray{background:rgba(77,85,91,.18)}
+.notice{padding:11px 12px;border-radius:10px;background:#11191a;border:1px solid #203a30;color:#b8e8ce;margin:10px 0}
+.danger{background:#1b1212;border-color:#4b2424;color:#ffb3b3}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.hidden{display:none!important}
+.post{padding:13px 0;border-bottom:1px solid var(--line)}
+.post:last-child{border-bottom:0}
+.postHead{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.postAuthor{font-weight:800}.postDate{font-size:11px;color:var(--muted)}
+.postText{margin-top:7px;white-space:pre-wrap;overflow-wrap:anywhere}
+.slotDay{margin-bottom:12px}
+.slot{display:grid;grid-template-columns:120px 1fr auto;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.slot:last-child{border-bottom:0}.slotTime{font-weight:800}
+.slotCourt{font-size:12px;color:var(--muted)}
+.slotStatus{font-size:13px}.slot.free .slotStatus{color:var(--green)}.slot.booked .slotStatus{color:var(--yellow)}
+.slotBtn{padding:8px 10px;border-radius:9px;border:1px solid var(--accent);background:var(--accent);color:#111;font-weight:800}
+.bookedBy{font-size:12px;color:var(--muted);margin-top:3px}
+@media(max-width:560px){
+.grid{grid-template-columns:1fr}
+.match{grid-template-columns:1fr 75px 1fr}
+.score{min-width:75px;font-size:13px}
+.leagues{position:relative}
+.slot{grid-template-columns:95px 1fr}
+.slot button{grid-column:2;justify-self:start}
+}
 </style>
 </head>
+
 <body>
+
 <header>
-  <div class="brand">🎾 Padel<span>Vibes</span> Liga</div>
-  <div class="sub" id="leagueSub">League A · online</div>
-  <div class="leagues">
-    <button class="leagueBtn active" data-league="League A">Liga A</button>
-    <button class="leagueBtn" data-league="League B">Liga B</button>
-    <button class="leagueBtn" data-league="League C">Liga C</button>
-  </div>
+<div class="brand">🎾 Padel<span>Vibes</span> Liga</div>
+<div class="sub" id="leagueSub">League A · online</div>
+
+<div class="leagues">
+<button class="leagueBtn active" data-league="League A">Liga A</button>
+<button class="leagueBtn" data-league="League B">Liga B</button>
+<button class="leagueBtn" data-league="League C">Liga C</button>
+</div>
 </header>
-<nav id="nav"><button data-page="home" class="active">Home</button><button data-page="matches">Spielplan</button><button data-page="table">Tabelle</button><button data-page="admin">Admin</button></nav>
+
+<nav id="nav">
+<button data-page="home" class="active">Home</button>
+<button data-page="matches">Spielplan</button>
+<button data-page="table">Tabelle</button>
+<button data-page="community">Community</button>
+<button data-page="slots">Slots</button>
+<button data-page="admin">Admin</button>
+</nav>
+
 <main>
+
 <section id="home" class="page active">
-  <div class="card"><h2 id="homeTitle">League A</h2><div class="muted" id="homeMeta">Lade Daten…</div></div>
-  <div class="grid"><div class="card"><div class="small">Teams</div><div class="stat" id="teamCount">–</div></div><div class="card"><div class="small">Spiele</div><div class="stat" id="played">–</div></div></div>
-  <div class="card"><h3>Nächste Spiele</h3><div id="homeMatches" class="muted">Lade Daten…</div></div>
+<div class="card">
+<h2 id="homeTitle">League A</h2>
+<div class="muted" id="homeMeta">Lade Daten…</div>
+</div>
+
+<div class="grid">
+<div class="card">
+<div class="small">Teams</div>
+<div class="stat" id="teamCount">–</div>
+</div>
+
+<div class="card">
+<div class="small">Spiele</div>
+<div class="stat" id="played">–</div>
+</div>
+</div>
+
+<div class="card">
+<h3>Nächste Spiele</h3>
+<div id="homeMatches" class="muted">Lade Daten…</div>
+</div>
 </section>
-<section id="matches" class="page"><h2>Spielplan</h2><div id="matchdays">Lade Daten…</div></section>
-<section id="table" class="page"><h2>Tabelle</h2><div class="card"><div style="overflow:auto"><table><thead><tr><th>#</th><th>Team / Spieler</th><th>Sp</th><th>S</th><th>N</th><th>Pkt</th></tr></thead><tbody id="standings"></tbody></table></div><div class="legend"><span class="lgreen" id="greenLegend">Playoff / Aufstieg</span><span class="lred">Abstieg</span><span class="lgray" id="grayLegend">Schlussbereich</span></div></div></section>
+
+
+<section id="matches" class="page">
+<h2>Spielplan</h2>
+<div id="matchdays">Lade Daten…</div>
+</section>
+
+
+<section id="table" class="page">
+<h2>Tabelle</h2>
+
+<div class="card">
+<div style="overflow:auto">
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Team / Spieler</th>
+<th>Sp</th>
+<th>S</th>
+<th>N</th>
+<th>Pkt</th>
+</tr>
+</thead>
+
+<tbody id="standings"></tbody>
+</table>
+</div>
+
+<div class="legend">
+<span class="lgreen" id="greenLegend">Playoff / Aufstieg</span>
+<span class="lred">Abstieg</span>
+<span class="lgray" id="grayLegend">Schlussbereich</span>
+</div>
+</div>
+</section>
+
+
+<section id="community" class="page">
+
+<h2>Community · <span id="communityLeagueTitle">League A</span></h2>
+
+<div class="card">
+
+<div class="muted">
+Hier können sich die Spieler dieser Liga austauschen,
+Nachrichten schreiben und Spieltermine abstimmen.
+</div>
+
+<label>Dein Name / Team</label>
+<input id="communityName" placeholder="z.B. Rohrpasser / Reinsch">
+
+<label>Nachricht</label>
+<textarea id="communityMessage" placeholder="z.B. Hat jemand Dienstag um 20:15 Uhr Zeit?"></textarea>
+
+<div class="actions">
+<button class="btn primary" id="postBtn">Nachricht posten</button>
+<button class="btn" id="refreshCommunityBtn">Aktualisieren</button>
+</div>
+
+<div id="communityMsg" class="small"></div>
+
+</div>
+
+<div class="card">
+<h3>Nachrichten</h3>
+<div id="communityPosts" class="muted">Lade Nachrichten…</div>
+</div>
+
+</section>
+
+
+<section id="slots" class="page">
+
+<h2>Padel-Slots</h2>
+
+<div class="notice">
+<b>Wichtig:</b> Die Belegung ist ligaübergreifend sichtbar.
+Wenn Liga A einen Slot bucht, sehen Liga B und C ihn ebenfalls als belegt.
+</div>
+
+<div class="card">
+
+<h3>Slot buchen</h3>
+
+<div class="muted">
+Jeden Dienstag ab 29.09.2026 ·
+19:00–20:15 ·
+20:15–21:30 ·
+21:30–22:45 ·
+jeweils Court 1 und Court 2.
+</div>
+
+<label>Name / Team</label>
+<input id="slotBooker" placeholder="z.B. Rohrpasser / Reinsch">
+
+<div class="actions">
+<button class="btn" id="refreshSlotsBtn">Slots aktualisieren</button>
+</div>
+
+</div>
+
+<div id="slotsList">Lade Slots…</div>
+
+</section>
+
+
 <section id="admin" class="page">
-  <div id="loginBox" class="card"><h2>Admin Login</h2><div class="muted">Nur der freigegebene Admin kann Teams und Ergebnisse ändern.</div><label>E-Mail</label><input id="email" type="email" autocomplete="username"><label>Passwort</label><input id="password" type="password" autocomplete="current-password"><div class="actions"><button class="btn primary" id="loginBtn">Einloggen</button></div><div id="loginMsg" class="small"></div></div>
-  <div id="adminBox" class="hidden"><div class="card"><h2>Teams bearbeiten</h2><div class="muted">Spieleränderungen werden automatisch im Spielplan und in der Tabelle übernommen.</div><div id="teamsAdmin"></div></div><div class="card"><h2>Ergebnisse</h2><div class="muted">Score z.B. <b>6:0 6:1</b> oder <b>6:4 3:6 10:8</b>.</div><div id="resultsAdmin"></div></div><div class="actions"><button class="btn" id="logoutBtn">Ausloggen</button></div></div>
+
+<div id="loginBox" class="card">
+
+<h2>Admin Login</h2>
+
+<div class="muted">
+Nur der freigegebene Admin kann Teams und Ergebnisse ändern.
+</div>
+
+<label>E-Mail</label>
+<input id="email" type="email" autocomplete="username">
+
+<label>Passwort</label>
+<input id="password" type="password" autocomplete="current-password">
+
+<div class="actions">
+<button class="btn primary" id="loginBtn">Einloggen</button>
+</div>
+
+<div id="loginMsg" class="small"></div>
+
+</div>
+
+
+<div id="adminBox" class="hidden">
+
+<div class="card">
+
+<h2>Teams bearbeiten</h2>
+
+<div class="muted">
+Spieleränderungen werden automatisch im Spielplan und in der Tabelle übernommen.
+</div>
+
+<div id="teamsAdmin"></div>
+
+</div>
+
+
+<div class="card">
+
+<h2>Ergebnisse</h2>
+
+<div class="muted">
+Score z.B. <b>6:0 6:1</b> oder <b>6:4 3:6 10:8</b>.
+</div>
+
+<div id="resultsAdmin"></div>
+
+</div>
+
+<div class="actions">
+<button class="btn" id="logoutBtn">Ausloggen</button>
+</div>
+
+</div>
+
 </section>
+
 </main>
+
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
+
 const SUPABASE_URL="https://leouoxzaorxnhjjvliyt.supabase.co";
+
 const SUPABASE_KEY="sb_publishable_PyiqqmUKl_ejecuWYswVsw_tf8qdOzy";
+
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-let teams=[],matches=[],league=null,isAdmin=false,currentLeague="League A";
+
+let teams=[];
+let matches=[];
+let league=null;
+let isAdmin=false;
+let currentLeague="League A";
+let allLeagues=[];
+let allSlots=[];
+
+
 const nav=[...document.querySelectorAll("nav button")];
-nav.forEach(b=>b.onclick=()=>{nav.forEach(x=>x.classList.remove("active"));b.classList.add("active");document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));document.getElementById(b.dataset.page).classList.add("active");if(b.dataset.page==="admin")refreshAdmin()});
-document.querySelectorAll(".leagueBtn").forEach(b=>b.onclick=async()=>{currentLeague=b.dataset.league;document.querySelectorAll(".leagueBtn").forEach(x=>x.classList.toggle("active",x===b));await load()});
+
+nav.forEach(b=>b.onclick=async()=>{
+
+nav.forEach(x=>x.classList.remove("active"));
+
+b.classList.add("active");
+
+document.querySelectorAll(".page")
+.forEach(p=>p.classList.remove("active"));
+
+document.getElementById(b.dataset.page)
+.classList.add("active");
+
+if(b.dataset.page==="admin")refreshAdmin();
+
+if(b.dataset.page==="community")loadCommunity();
+
+if(b.dataset.page==="slots")loadSlots();
+
+});
+
+
+document.querySelectorAll(".leagueBtn").forEach(b=>b.onclick=async()=>{
+
+currentLeague=b.dataset.league;
+
+document.querySelectorAll(".leagueBtn")
+.forEach(x=>x.classList.toggle("active",x===b));
+
+await load();
+
+});
+
+
 async function load(){
- document.getElementById("leagueSub").textContent=currentLeague+" · online";
- const {data:l,error:le}=await sb.from("leagues").select("*").eq("name",currentLeague).single();if(le){console.error(le);return}
- league=l;
- const {data:t,error:te}=await sb.from("teams").select("*").eq("league_id",l.id).order("position");if(te){console.error(te);return}teams=t||[];
- const {data:m,error:me}=await sb.from("matches").select("*").eq("league_id",l.id).order("matchday").order("created_at");if(me){console.error(me);return}matches=m||[];
- render();if(document.getElementById("admin").classList.contains("active"))refreshAdmin();
+
+document.getElementById("leagueSub").textContent=currentLeague+" · online";
+
+document.getElementById("communityLeagueTitle").textContent=currentLeague;
+
+
+const {data:l,error:le}=await sb
+.from("leagues")
+.select("*")
+.eq("name",currentLeague)
+.single();
+
+if(le){
+console.error(le);
+return;
 }
-function tn(id){return teams.find(t=>t.id===id)?.name||"Unbekannt"}
+
+league=l;
+
+
+const {data:t,error:te}=await sb
+.from("teams")
+.select("*")
+.eq("league_id",l.id)
+.order("position");
+
+if(te){
+console.error(te);
+return;
+}
+
+teams=t||[];
+
+
+const {data:m,error:me}=await sb
+.from("matches")
+.select("*")
+.eq("league_id",l.id)
+.order("matchday")
+.order("created_at");
+
+if(me){
+console.error(me);
+return;
+}
+
+matches=m||[];
+
+
+if(!allLeagues.length){
+
+const {data:ls}=await sb
+.from("leagues")
+.select("id,name")
+.order("name");
+
+allLeagues=ls||[];
+
+}
+
+
+render();
+
+loadCommunity();
+
+loadSlots();
+
+if(document.getElementById("admin").classList.contains("active"))
+refreshAdmin();
+
+}
+
+
+function tn(id){
+
+return teams.find(t=>t.id===id)?.name||"Unbekannt";
+
+}
+
+
+function leagueName(id){
+
+return allLeagues.find(l=>l.id===id)?.name||"Unbekannte Liga";
+
+}
+
+
 function render(){
- const played=matches.filter(m=>m.winner_team_id).length;document.getElementById("homeTitle").textContent=currentLeague;document.getElementById("homeMeta").textContent=teams.length+" Teams · "+[...new Set(matches.map(m=>m.matchday))].length+" Spieltage · "+matches.length+" Spiele";document.getElementById("teamCount").textContent=teams.length;document.getElementById("played").textContent=played+" / "+matches.length;
- const upcoming=matches.filter(m=>!m.winner_team_id).slice(0,4);document.getElementById("homeMatches").innerHTML=upcoming.length?upcoming.map(m=>`<div class="match"><div class="team">${esc(tn(m.home_team_id))}</div><div class="score">ST ${m.matchday}</div><div class="team away">${esc(tn(m.away_team_id))}</div></div>`).join(""):"Alle Spiele sind eingetragen.";
- const days={};matches.forEach(m=>(days[m.matchday]??=[]).push(m));document.getElementById("matchdays").innerHTML=Object.entries(days).map(([d,ms])=>`<div class="card"><h3>Spieltag ${d}</h3>${ms.map(matchHtml).join("")}</div>`).join("");
- const rows=teams.map(t=>{const mm=matches.filter(m=>m.home_team_id===t.id||m.away_team_id===t.id);const wins=mm.filter(m=>m.winner_team_id===t.id).length;const losses=mm.filter(m=>m.winner_team_id&&m.winner_team_id!==t.id).length;return {...t,played:wins+losses,wins,losses,points:wins*3}}).sort((a,b)=>b.points-a.points||b.wins-a.wins||a.position-b.position);
- document.getElementById("standings").innerHTML=rows.map((t,i)=>{const pos=i+1;let cls="",label="";if(currentLeague==="League A"){if(pos<=4){cls="playoff";label="Playoff"}else if(pos>=9){cls="relegation";label="Abstieg"}}else if(currentLeague==="League B"){if(pos<=2){cls="promotion";label="Aufstieg"}else if(pos>=8){cls="relegation";label="Abstieg"}}else{if(pos<=2){cls="promotion";label="Aufstieg"}else if(pos>=8){cls="bottom";label="Schlussbereich"}}return `<tr class="${cls}"><td><b>${pos}</b></td><td><b>${esc(t.name)}</b><div class="players">${esc(t.player1||"")} ${t.player2?" · "+esc(t.player2):""} ${label?" · "+label:""}</div></td><td>${t.played}</td><td>${t.wins}</td><td>${t.losses}</td><td><b>${t.points}</b></td></tr>`}).join("");
- document.getElementById("greenLegend").textContent=currentLeague==="League A"?"Platz 1–4 · Playoffs":"Platz 1–2 · Aufstieg";document.getElementById("grayLegend").textContent=currentLeague==="League C"?"Platz 8–9 · Schlussbereich":"Normale Tabellenplätze";
+
+const played=matches.filter(m=>m.winner_team_id).length;
+
+document.getElementById("homeTitle").textContent=currentLeague;
+
+document.getElementById("homeMeta").textContent=
+teams.length+" Teams · "+
+[...new Set(matches.map(m=>m.matchday))].length+
+" Spieltage · "+
+matches.length+
+" Spiele";
+
+document.getElementById("teamCount").textContent=teams.length;
+
+document.getElementById("played").textContent=
+played+" / "+matches.length;
+
+
+const upcoming=matches
+.filter(m=>!m.winner_team_id)
+.slice(0,4);
+
+
+document.getElementById("homeMatches").innerHTML=
+upcoming.length
+?
+upcoming.map(m=>`
+<div class="match">
+<div class="team">${esc(tn(m.home_team_id))}</div>
+<div class="score">ST ${m.matchday}</div>
+<div class="team away">${esc(tn(m.away_team_id))}</div>
+</div>
+`).join("")
+:
+"Alle Spiele sind eingetragen.";
+
+
+const days={};
+
+matches.forEach(m=>
+(days[m.matchday]??=[]).push(m)
+);
+
+
+document.getElementById("matchdays").innerHTML=
+Object.entries(days)
+.map(([d,ms])=>`
+<div class="card">
+<h3>Spieltag ${d}</h3>
+${ms.map(matchHtml).join("")}
+</div>
+`)
+.join("");
+
+
+const rows=teams.map(t=>{
+
+const mm=matches.filter(m=>
+m.home_team_id===t.id ||
+m.away_team_id===t.id
+);
+
+const wins=mm.filter(m=>
+m.winner_team_id===t.id
+).length;
+
+const losses=mm.filter(m=>
+m.winner_team_id &&
+m.winner_team_id!==t.id
+).length;
+
+return {
+...t,
+played:wins+losses,
+wins,
+losses,
+points:wins*3
+};
+
+})
+.sort((a,b)=>
+b.points-a.points ||
+b.wins-a.wins ||
+a.position-b.position
+);
+
+
+document.getElementById("standings").innerHTML=
+rows.map((t,i)=>{
+
+const pos=i+1;
+let cls="";
+let label="";
+
+
+if(currentLeague==="League A"){
+
+if(pos<=4){
+cls="playoff";
+label="Playoff";
 }
-function matchHtml(m){return `<div class="match"><div class="team ${m.winner_team_id===m.home_team_id?'win':''}">${esc(tn(m.home_team_id))}</div><div class="score">${m.score_text?esc(m.score_text):"–"}</div><div class="team away ${m.winner_team_id===m.away_team_id?'win':''}">${esc(tn(m.away_team_id))}</div></div>`}
-function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}
+else if(pos>=9){
+cls="relegation";
+label="Abstieg";
+}
+
+}
+
+else if(currentLeague==="League B"){
+
+if(pos<=2){
+cls="promotion";
+label="Aufstieg";
+}
+else if(pos>=8){
+cls="relegation";
+label="Abstieg";
+}
+
+}
+
+else{
+
+if(pos<=2){
+cls="promotion";
+label="Aufstieg";
+}
+else if(pos>=8){
+cls="bottom";
+label="Schlussbereich";
+}
+
+}
+
+
+return `
+<tr class="${cls}">
+<td><b>${pos}</b></td>
+
+<td>
+<b>${esc(t.name)}</b>
+<div class="players">
+${esc(t.player1||"")}
+${t.player2?" · "+esc(t.player2):""}
+${label?" · "+label:""}
+</div>
+</td>
+
+<td>${t.played}</td>
+<td>${t.wins}</td>
+<td>${t.losses}</td>
+<td><b>${t.points}</b></td>
+
+</tr>
+`;
+
+}).join("");
+
+
+document.getElementById("greenLegend").textContent=
+currentLeague==="League A"
+?
+"Platz 1–4 · Playoffs"
+:
+"Platz 1–2 · Aufstieg";
+
+
+document.getElementById("grayLegend").textContent=
+currentLeague==="League C"
+?
+"Platz 8–9 · Schlussbereich"
+:
+"Normale Tabellenplätze";
+
+}
+
+
+function matchHtml(m){
+
+return `
+<div class="match">
+
+<div class="team ${m.winner_team_id===m.home_team_id?'win':''}">
+${esc(tn(m.home_team_id))}
+</div>
+
+<div class="score">
+${m.score_text?esc(m.score_text):"–"}
+</div>
+
+<div class="team away ${m.winner_team_id===m.away_team_id?'win':''}">
+${esc(tn(m.away_team_id))}
+</div>
+
+</div>
+`;
+
+}
+
+
+function esc(s){
+
+return String(s??"")
+.replace(/[&<>"']/g,c=>({
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+"\"":"&quot;",
+"'":"&#39;"
+}[c]));
+
+}
+
+
+function formatDateTime(s){
+
+const d=new Date(s);
+
+return d.toLocaleString("de-DE",{
+day:"2-digit",
+month:"2-digit",
+year:"numeric",
+hour:"2-digit",
+minute:"2-digit"
+});
+
+}
+
+
+async function loadCommunity(){
+
+if(!league)return;
+
+
+const {data,error}=await sb
+.from("community_posts")
+.select("*")
+.eq("league_id",league.id)
+.order("created_at",{ascending:false});
+
+
+const box=document.getElementById("communityPosts");
+
+
+if(error){
+
+box.innerHTML=
+`<div class="danger">
+Community konnte noch nicht geladen werden.<br>
+${esc(error.message)}
+</div>`;
+
+return;
+}
+
+
+if(!data?.length){
+
+box.innerHTML=
+'<div class="muted">Noch keine Nachrichten. Schreib die erste!</div>';
+
+return;
+
+}
+
+
+box.innerHTML=data.map(p=>`
+
+<div class="post">
+
+<div class="postHead">
+
+<div class="postAuthor">
+${esc(p.author_name)}
+</div>
+
+<div class="postDate">
+${formatDateTime(p.created_at)}
+</div>
+
+</div>
+
+<div class="postText">
+${esc(p.message)}
+</div>
+
+</div>
+
+`).join("");
+
+}
+
+
+async function createPost(){
+
+const name=
+document.getElementById("communityName")
+.value.trim();
+
+const message=
+document.getElementById("communityMessage")
+.value.trim();
+
+const msg=
+document.getElementById("communityMsg");
+
+
+if(!name||!message){
+
+msg.textContent=
+"Bitte Name und Nachricht eintragen.";
+
+return;
+
+}
+
+
+const {error}=await sb
+.from("community_posts")
+.insert({
+league_id:league.id,
+author_name:name,
+message
+});
+
+
+if(error){
+
+msg.textContent=error.message;
+
+return;
+
+}
+
+
+document.getElementById("communityMessage").value="";
+
+msg.textContent="Nachricht veröffentlicht.";
+
+await loadCommunity();
+
+}
+
+
+async function loadSlots(){
+
+const box=document.getElementById("slotsList");
+
+
+const {data,error}=await sb
+.from("padel_slots")
+.select("*")
+.gte("slot_date","2026-09-29")
+.order("slot_date")
+.order("start_time")
+.order("court");
+
+
+if(error){
+
+box.innerHTML=
+`<div class="danger">
+Slots konnten noch nicht geladen werden.<br>
+${esc(error.message)}
+</div>`;
+
+return;
+
+}
+
+
+allSlots=data||[];
+
+
+if(!allSlots.length){
+
+box.innerHTML=
+'<div class="muted">Noch keine Slots vorhanden.</div>';
+
+return;
+
+}
+
+
+const days={};
+
+
+allSlots.forEach(s=>
+(days[s.slot_date]??=[]).push(s)
+);
+
+
+box.innerHTML=
+Object.entries(days)
+.map(([date,slots])=>{
+
+const d=new Date(date+"T12:00:00");
+
+const day=d.toLocaleDateString("de-DE",{
+weekday:"long",
+day:"2-digit",
+month:"2-digit",
+year:"numeric"
+});
+
+
+return `
+<div class="card slotDay">
+
+<h3>${day}</h3>
+
+${slots.map(slotHtml).join("")}
+
+</div>
+`;
+
+})
+.join("");
+
+
+document
+.querySelectorAll(".bookSlot")
+.forEach(b=>
+b.onclick=()=>bookSlot(b.dataset.id)
+);
+
+}
+
+
+function slotHtml(s){
+
+const free=!s.booked_by;
+
+const time=
+String(s.start_time).slice(0,5)+
+"–"+
+String(s.end_time).slice(0,5);
+
+const status=
+free
+?
+"FREI"
+:
+"BELEGT";
+
+
+const detail=
+free
+?
+"Für alle Ligen buchbar"
+:
+`${esc(leagueName(s.league_id))} · ${esc(s.booked_by)}`;
+
+
+return `
+<div class="slot ${free?"free":"booked"}">
+
+<div>
+
+<div class="slotTime">
+${time}
+</div>
+
+<div class="slotCourt">
+Court ${s.court}
+</div>
+
+</div>
+
+<div class="slotStatus">
+
+<b>${status}</b>
+
+<div class="bookedBy">
+${detail}
+</div>
+
+</div>
+
+${free
+?
+`<button class="slotBtn bookSlot" data-id="${s.id}">
+Buchen
+</button>`
+:
+""}
+
+</div>
+`;
+
+}
+
+
+async function bookSlot(id){
+
+const name=
+document.getElementById("slotBooker")
+.value.trim();
+
+
+if(!name){
+
+alert("Bitte zuerst Name / Team eintragen.");
+
+return;
+
+}
+
+
+const slot=allSlots.find(s=>s.id===id);
+
+
+if(!slot||slot.booked_by){
+
+alert("Dieser Slot ist inzwischen belegt.");
+
+await loadSlots();
+
+return;
+
+}
+
+
+const {data,error}=await sb
+.from("padel_slots")
+.update({
+league_id:league.id,
+booked_by:name
+})
+.eq("id",id)
+.is("booked_by",null)
+.select("id");
+
+
+if(error){
+
+alert("Buchung nicht möglich: "+error.message);
+
+return;
+
+}
+
+
+if(!data?.length){
+
+alert("Dieser Slot wurde gerade von jemand anderem gebucht.");
+
+await loadSlots();
+
+return;
+
+}
+
+
+alert("Slot gebucht.");
+
+await loadSlots();
+
+}
+
+
 async function refreshAdmin(){
- const {data:{user}}=await sb.auth.getUser();if(!user){isAdmin=false;document.getElementById("loginBox").classList.remove("hidden");document.getElementById("adminBox").classList.add("hidden");return}
- const {data:p}=await sb.from("profiles").select("role").eq("id",user.id).single();isAdmin=p?.role==="admin";document.getElementById("loginBox").classList.toggle("hidden",isAdmin);document.getElementById("adminBox").classList.toggle("hidden",!isAdmin);if(!isAdmin)return;
- document.getElementById("teamsAdmin").innerHTML=teams.map(t=>`<div class="card"><label>Team ${t.position} – Spieler 1</label><input data-p1="${t.id}" value="${esc(t.player1||"")}"><label>Spieler 2</label><input data-p2="${t.id}" value="${esc(t.player2||"")}"><div class="actions"><button class="btn primary saveTeam" data-id="${t.id}">Speichern</button></div></div>`).join("");document.querySelectorAll(".saveTeam").forEach(b=>b.onclick=()=>saveTeam(b.dataset.id));
- document.getElementById("resultsAdmin").innerHTML=matches.map(m=>`<div class="card"><div><b>Spieltag ${m.matchday}</b> · ${esc(tn(m.home_team_id))} – ${esc(tn(m.away_team_id))}</div><label>Ergebnis</label><input id="score-${m.id}" value="${esc(m.score_text||"")}" placeholder="6:0 6:1"><label>Sieger</label><select id="winner-${m.id}"><option value="">Noch offen</option><option value="${m.home_team_id}" ${m.winner_team_id===m.home_team_id?"selected":""}>${esc(tn(m.home_team_id))}</option><option value="${m.away_team_id}" ${m.winner_team_id===m.away_team_id?"selected":""}>${esc(tn(m.away_team_id))}</option></select><div class="actions"><button class="btn primary saveResult" data-id="${m.id}">Ergebnis speichern</button></div></div>`).join("");document.querySelectorAll(".saveResult").forEach(b=>b.onclick=()=>saveResult(b.dataset.id));
+
+const {data:{user}}=
+await sb.auth.getUser();
+
+
+if(!user){
+
+isAdmin=false;
+
+document.getElementById("loginBox")
+.classList.remove("hidden");
+
+document.getElementById("adminBox")
+.classList.add("hidden");
+
+return;
+
 }
-async function saveTeam(id){const p1=document.querySelector(`[data-p1="${id}"]`).value.trim(),p2=document.querySelector(`[data-p2="${id}"]`).value.trim();if(!p1||!p2)return alert("Beide Spielernamen eintragen.");const {error}=await sb.from("teams").update({player1:p1,player2:p2}).eq("id",id);if(error)return alert(error.message);await load();await refreshAdmin();alert("Team gespeichert.")}
-async function saveResult(id){const score=document.getElementById("score-"+id).value.trim(),winner=document.getElementById("winner-"+id).value||null;const {error}=await sb.from("matches").update({score_text:score||null,winner_team_id:winner,home_score:winner?1:null,away_score:winner?1:null,updated_at:new Date().toISOString()}).eq("id",id);if(error)return alert(error.message);await load();await refreshAdmin();alert("Ergebnis gespeichert.")}
-document.getElementById("loginBtn").onclick=async()=>{const email=document.getElementById("email").value.trim(),password=document.getElementById("password").value;const {error}=await sb.auth.signInWithPassword({email,password});document.getElementById("loginMsg").textContent=error?error.message:"Eingeloggt.";if(!error)refreshAdmin()};document.getElementById("logoutBtn").onclick=async()=>{await sb.auth.signOut();refreshAdmin()};sb.auth.onAuthStateChange(()=>refreshAdmin());load();
+
+
+const {data:p}=await sb
+.from("profiles")
+.select("role")
+.eq("id",user.id)
+.single();
+
+
+isAdmin=p?.role==="admin";
+
+
+document.getElementById("loginBox")
+.classList.toggle("hidden",isAdmin);
+
+document.getElementById("adminBox")
+.classList.toggle("hidden",!isAdmin);
+
+
+if(!isAdmin)return;
+
+
+document.getElementById("teamsAdmin").innerHTML=
+teams.map(t=>`
+
+<div class="card">
+
+<label>
+Team ${t.position} – Spieler 1
+</label>
+
+<input
+data-p1="${t.id}"
+value="${esc(t.player1||"")}"
+>
+
+<label>Spieler 2</label>
+
+<input
+data-p2="${t.id}"
+value="${esc(t.player2||"")}"
+>
+
+<div class="actions">
+
+<button
+class="btn primary saveTeam"
+data-id="${t.id}"
+>
+Speichern
+</button>
+
+</div>
+
+</div>
+
+`).join("");
+
+
+document
+.querySelectorAll(".saveTeam")
+.forEach(b=>
+b.onclick=()=>saveTeam(b.dataset.id)
+);
+
+
+document.getElementById("resultsAdmin").innerHTML=
+matches.map(m=>`
+
+<div class="card">
+
+<div>
+<b>Spieltag ${m.matchday}</b> ·
+${esc(tn(m.home_team_id))}
+–
+${esc(tn(m.away_team_id))}
+</div>
+
+<label>Ergebnis</label>
+
+<input
+id="score-${m.id}"
+value="${esc(m.score_text||"")}"
+placeholder="6:0 6:1"
+>
+
+<label>Sieger</label>
+
+<select id="winner-${m.id}">
+
+<option value="">
+Noch offen
+</option>
+
+<option
+value="${m.home_team_id}"
+${m.winner_team_id===m.home_team_id?"selected":""}
+>
+${esc(tn(m.home_team_id))}
+</option>
+
+<option
+value="${m.away_team_id}"
+${m.winner_team_id===m.away_team_id?"selected":""}
+>
+${esc(tn(m.away_team_id))}
+</option>
+
+</select>
+
+<div class="actions">
+
+<button
+class="btn primary saveResult"
+data-id="${m.id}"
+>
+Ergebnis speichern
+</button>
+
+</div>
+
+</div>
+
+`).join("");
+
+
+document
+.querySelectorAll(".saveResult")
+.forEach(b=>
+b.onclick=()=>saveResult(b.dataset.id)
+);
+
+}
+
+
+async function saveTeam(id){
+
+const p1=
+document.querySelector(`[data-p1="${id}"]`)
+.value.trim();
+
+const p2=
+document.querySelector(`[data-p2="${id}"]`)
+.value.trim();
+
+
+if(!p1||!p2)
+return alert("Beide Spielernamen eintragen.");
+
+
+const {error}=await sb
+.from("teams")
+.update({
+player1:p1,
+player2:p2
+})
+.eq("id",id);
+
+
+if(error)
+return alert(error.message);
+
+
+await load();
+await refreshAdmin();
+
+alert("Team gespeichert.");
+
+}
+
+
+async function saveResult(id){
+
+const score=
+document.getElementById("score-"+id)
+.value.trim();
+
+const winner=
+document.getElementById("winner-"+id)
+.value||null;
+
+
+const {error}=await sb
+.from("matches")
+.update({
+score_text:score||null,
+winner_team_id:winner,
+home_score:winner?1:null,
+away_score:winner?1:null,
+updated_at:new Date().toISOString()
+})
+.eq("id",id);
+
+
+if(error)
+return alert(error.message);
+
+
+await load();
+await refreshAdmin();
+
+alert("Ergebnis gespeichert.");
+
+}
+
+
+document.getElementById("postBtn")
+.onclick=createPost;
+
+
+document.getElementById("refreshCommunityBtn")
+.onclick=loadCommunity;
+
+
+document.getElementById("refreshSlotsBtn")
+.onclick=loadSlots;
+
+
+document.getElementById("loginBtn").onclick=async()=>{
+
+const email=
+document.getElementById("email")
+.value.trim();
+
+const password=
+document.getElementById("password")
+.value;
+
+
+const {error}=await sb.auth.signInWithPassword({
+email,
+password
+});
+
+
+document.getElementById("loginMsg")
+.textContent=
+error
+?
+error.message
+:
+"Eingeloggt.";
+
+
+if(!error)
+refreshAdmin();
+
+};
+
+
+document.getElementById("logoutBtn").onclick=async()=>{
+
+await sb.auth.signOut();
+
+refreshAdmin();
+
+};
+
+
+sb.auth.onAuthStateChange(()=>
+refreshAdmin()
+);
+
+
+load();
+
 </script>
-</body></html>
+
+</body>
+</html>
