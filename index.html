@@ -39,10 +39,10 @@ tbody tr.playoff td:first-child,tbody tr.promotion td:first-child{border-left:4p
 
 <section id="training" class="page">
 <h2>Training · Donnerstag</h2>
-<div class="notice"><b>Training jeden Donnerstag</b><br>18:00–19:30 Uhr und 19:30–21:00 Uhr · jeweils 8 Plätze.</div>
+<div class="notice"><b>Training jeden Donnerstag</b><br>Kinder 16:00–17:00 Uhr · 6 Plätze · Damen 17:00–18:00 Uhr · 8 Plätze · Training 18:00–19:30 Uhr · 8 Plätze · Training 19:30–21:00 Uhr · 8 Plätze.</div>
 <div class="card">
 <h3>Buchungsregel</h3>
-<div class="muted">Die Eintragung für den kommenden Donnerstag wird jeden Sonntag ab <b>10:00 Uhr</b> freigeschaltet. Jede Gruppe hat 8 Plätze.</div>
+<div class="muted">Die Eintragung für den kommenden Donnerstag wird jeden Sonntag ab <b>10:00 Uhr</b> freigeschaltet. Kinder: 6 Plätze · Damen: 8 Plätze · Training: jeweils 8 Plätze.</div>
 <label>Dein Name / Team</label><input id="trainingBooker" placeholder="z.B. Rohrpasser / Reinsch">
 <div id="trainingOpenMsg" class="small" style="margin-top:8px"></div>
 </div>
@@ -118,31 +118,36 @@ async function loadTraining(){
     return;
   }
   trainingBookings=data||[];
-  const times=[["18:00","19:30"],["19:30","21:00"]];
-  box.innerHTML=times.map(([start,end])=>{
-    const rows=Array.from({length:8},(_,i)=>trainingBookings.find(x=>x.start_time.slice(0,5)===start&&x.slot_number===i+1));
-    return `<div class="card"><h3>${start}–${end} Uhr</h3>${rows.map((r,i)=>{
+  const groups=[
+    ["Kinder","16:00","17:00",6],
+    ["Damen","17:00","18:00",8],
+    ["Training","18:00","19:30",8],
+    ["Training","19:30","21:00",8]
+  ];
+  box.innerHTML=groups.map(([category,start,end,capacity])=>{
+    const rows=Array.from({length:capacity},(_,i)=>trainingBookings.find(x=>x.start_time.slice(0,5)===start&&x.slot_number===i+1));
+    return `<div class="card"><h3>${category} · ${start}–${end} Uhr</h3>${rows.map((r,i)=>{
       if(!r){
-        return `<div class="trainingSlot"><div class="trainingNo">${i+1}</div><div class="trainingFree"><b>Frei</b></div>${open?`<button class="slotBtn trainingBook" data-start="${start}" data-end="${end}" data-slot="${i+1}">Eintragen</button>`:""}</div>`;
+        return `<div class="trainingSlot"><div class="trainingNo">${i+1}</div><div class="trainingFree"><b>Frei</b></div>${open?`<button class="slotBtn trainingBook" data-category="${category}" data-start="${start}" data-end="${end}" data-slot="${i+1}">Eintragen</button>`:""}</div>`;
       }
       const mine=r.booking_token && localStorage.getItem("trainingToken:"+r.id)===r.booking_token;
       return `<div class="trainingSlot"><div class="trainingNo">${i+1}</div><div class="trainingBooked"><b>${esc(r.booked_by)}</b><div class="small">${esc(leagueName(r.league_id))}</div></div>${mine?`<button class="cancelBtn cancelTraining" data-id="${r.id}">Stornieren</button>`:""}</div>`;
     }).join("")}</div>`;
   }).join("");
-  document.querySelectorAll(".trainingBook").forEach(b=>b.onclick=()=>bookTraining(b.dataset.start,b.dataset.end,Number(b.dataset.slot),key,open));
+  document.querySelectorAll(".trainingBook").forEach(b=>b.onclick=()=>bookTraining(b.dataset.category,b.dataset.start,b.dataset.end,Number(b.dataset.slot),key,open));
   document.querySelectorAll(".cancelTraining").forEach(b=>b.onclick=()=>cancelTraining(b.dataset.id));
 }
 function makeToken(){
   if(crypto.randomUUID)return crypto.randomUUID();
   return Date.now().toString(36)+"-"+Math.random().toString(36).slice(2);
 }
-async function bookTraining(start,end,slot,key,open){
+async function bookTraining(category,start,end,slot,key,open){
   if(!open){alert("Die Buchung öffnet sonntags um 10:00 Uhr.");return}
   const name=document.getElementById("trainingBooker").value.trim();
   if(!name){alert("Bitte zuerst Name / Team eintragen.");return}
   const token=makeToken();
   const {data,error}=await sb.from("training_bookings").insert({
-    training_date:key,start_time:start,end_time:end,slot_number:slot,
+    training_date:key,start_time:start,end_time:end,category:category,slot_number:slot,
     booked_by:name,league_id:league.id,booking_token:token
   }).select("id").single();
   if(error){
