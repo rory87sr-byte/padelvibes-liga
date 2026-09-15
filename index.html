@@ -57,6 +57,23 @@ main{max-width:900px!important;margin:0 auto!important;padding:0 14px 16px!impor
   .welcomeExact{height:auto;min-height:102px}
   .statExact{height:109px}
 }
+
+/* FINAL FUNCTION + SHARPNESS FIX */
+.homeTileExact{image-rendering:auto;-webkit-font-smoothing:antialiased;transform:translateZ(0);backface-visibility:hidden;}
+.homeTileExact:hover{filter:brightness(1.03)}
+.homeTileExact:focus-visible{outline:2px solid #ff8614;outline-offset:2px}
+/* Keep the home compact enough to fit as one mobile screen while preserving the reference proportions. */
+@media(max-width:560px){
+  main{padding-bottom:10px!important}
+  .heroExact{aspect-ratio:707/222}
+  .homeGridExact{gap:8px;margin-top:8px}
+  .homeTileExact{aspect-ratio:321/146}
+  .mottoExact{margin:6px auto 4px}
+  .statsExact{gap:8px}
+  .statExact{height:92px;padding:10px 18px}
+  .statIconExact{left:18px;top:10px}
+  .statLabelExact{left:18px;bottom:11px}
+}
 </style>
 </head>
 <body>
@@ -88,12 +105,12 @@ main{max-width:900px!important;margin:0 auto!important;padding:0 14px 16px!impor
   <div class="heroExact" aria-label="PadelVibes Banner"></div>
   <div class="welcomeExact"><h2>Hallo <span id="homeUserName">Rory</span> 👋</h2><p>Schön, dass du da bist!</p></div>
   <div class="homeGridExact">
-    <button class="homeTileExact tile1" data-go="table" aria-label="Liga"></button>
-    <button class="homeTileExact tile2" data-go="slots" aria-label="Slots"></button>
-    <button class="homeTileExact tile3" data-go="training" aria-label="Training"></button>
-    <button class="homeTileExact tile4" data-go="community" aria-label="Community"></button>
-    <button class="homeTileExact tile5" data-go="table" aria-label="Teams"></button>
-    <button class="homeTileExact tile6" data-go="admin" aria-label="Admin"></button>
+    <button class="homeTile homeTileExact tile1" data-go="table" aria-label="Liga"></button>
+    <button class="homeTile homeTileExact tile2" data-go="slots" aria-label="Slots"></button>
+    <button class="homeTile homeTileExact tile3" data-go="training" aria-label="Training"></button>
+    <button class="homeTile homeTileExact tile4" data-go="community" aria-label="Community"></button>
+    <button class="homeTile homeTileExact tile5" data-go="table" aria-label="Teams"></button>
+    <button class="homeTile homeTileExact tile6" data-go="admin" aria-label="Admin"></button>
   </div>
   <div class="mottoExact"></div>
   <div class="statsExact">
