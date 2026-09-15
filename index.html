@@ -67,6 +67,40 @@ main{max-width:none;margin:0;padding:0 24px 105px}
 .card{background:#10151a;border:1px solid #293139;border-radius:18px;padding:16px;margin:12px 0}
 @media(max-width:560px){.grid{grid-template-columns:1fr 1fr}main{padding-left:24px;padding-right:24px}.match{grid-template-columns:1fr 70px 1fr}.slot{grid-template-columns:95px 1fr}}
 @media(max-width:390px){.homeTiles{gap:10px}.homeTile{padding:16px;min-height:145px}.homeTile strong{font-size:19px}.homeTile span:not(.tileIcon){font-size:14px}.brand{font-size:27px}}
+
+/* FINAL MOBILE COMPACT HOME - everything visible without scrolling */
+@media (max-width:560px){
+  header{padding:10px 18px 10px;}
+  .brand{font-size:26px;letter-spacing:-1px;}
+  .sub{font-size:13px;margin-top:4px;}
+  .authUser{margin-top:10px;font-size:14px;}
+  .logoutTop,.adminTop{font-size:14px;padding:7px 11px;border-radius:10px;}
+  .leagues{gap:8px;margin-top:10px;}
+  .leagueBtn{height:42px;border-radius:11px;font-size:15px;padding:7px;}
+  main{padding:0 18px 88px;}
+  .homeHero{height:150px;margin:0 -18px;border-bottom-left-radius:24px;border-bottom-right-radius:24px;background-position:center;}
+  .homeWelcome{left:18px;right:18px;bottom:-1px;transform:translateY(48%);border-radius:15px;padding:10px 15px;}
+  .homeWelcome h1{font-size:21px;margin:0 0 2px;letter-spacing:-.5px;}
+  .homeWelcome p{font-size:13px;}
+  .homeSpacer{height:48px;}
+  .homeTiles{gap:8px;}
+  .homeTile{min-height:82px;height:82px;border-radius:14px;padding:10px 13px;}
+  .homeTile .tileIcon{font-size:22px!important;line-height:1;display:block;margin-bottom:5px;}
+  .homeTile strong{font-size:17px;line-height:1;}
+  .homeTile span:not(.tileIcon){font-size:11px;margin-top:4px;line-height:1.1;padding-right:12px;}
+  .homeTile .tileArrow{font-size:24px;right:10px;bottom:9px;}
+  .homeQuote{margin:10px 0 8px;}
+  .homeQuote .q1{letter-spacing:4px;font-size:9px;}
+  .homeQuote .q2{font-size:15px;letter-spacing:0;}
+  .homeQuote .line{width:105px;height:3px;margin-top:4px;}
+  .homeStats{gap:8px;}
+  .homeStat{height:58px;border-radius:14px;padding:9px 13px;}
+  .homeStat .num{font-size:20px;line-height:1;}
+  .homeStat .lab{margin-top:5px;font-size:10px;}
+  #nav{height:72px;padding:5px 8px calc(5px + env(safe-area-inset-bottom));}
+  #nav button{font-size:10px;border-radius:15px;gap:1px;}
+  #nav button::first-line{font-size:18px;}
+}
 </style>
 </head>
 <body>
