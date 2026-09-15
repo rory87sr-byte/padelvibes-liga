@@ -74,6 +74,46 @@ main{max-width:900px!important;margin:0 auto!important;padding:0 14px 16px!impor
   .statIconExact{left:18px;top:10px}
   .statLabelExact{left:18px;bottom:11px}
 }
+
+/* === SHARP HOME TILES: vector/CSS instead of raster screenshots === */
+.homeTileExact{
+  position:relative!important; display:block!important; overflow:hidden!important;
+  background-image:none!important; background:#0b1217!important;
+  border:1px solid #263640!important; border-radius:18px!important;
+  color:#f4f6f7!important; text-align:left!important; padding:0!important;
+  -webkit-font-smoothing:antialiased; text-rendering:geometricPrecision;
+  transform:none!important; image-rendering:auto!important;
+}
+.homeTileExact.tile1{background:linear-gradient(135deg,#4a260c 0%,#1c1510 58%,#0d1419 100%)!important;border-color:#c46712!important}
+.homeTileExact:active{transform:scale(.995)!important}
+.vicon{position:absolute;left:18px;top:13px;display:flex;align-items:center;justify-content:center;color:#fff;line-height:1;z-index:1}
+.vtitle{position:absolute;left:18px;top:48px;font-size:17px;font-weight:900;letter-spacing:-.25px;line-height:1.05}
+.vsub{position:absolute;left:18px;bottom:13px;font-size:11px;color:#aeb6bc;font-weight:500;line-height:1.1;white-space:nowrap}
+.varrow{position:absolute;right:15px;bottom:10px;color:#ff8615;font-size:31px;font-weight:300;line-height:1}
+.trophy{font-size:27px;filter:saturate(1.1)}
+.gridicon{width:27px;height:27px;display:grid;grid-template-columns:repeat(2,10px);grid-template-rows:repeat(2,10px);gap:3px;border:2px solid #f3f5f6;padding:3px}
+.gridicon i{display:block;border:1px solid #f3f5f6;position:relative}
+.gridicon i:after{content:'+';position:absolute;inset:-2px 0 0;text-align:center;font-size:9px;line-height:10px;color:#fff;font-style:normal}
+.ballicon{width:29px;height:29px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#dfff58 0 12%,#a9dc20 24%,#62a91b 65%,#234f12 100%);font-size:0;box-shadow:inset -2px -2px 5px rgba(0,0,0,.35),0 0 0 1px rgba(255,255,255,.2)}
+.ballicon:before{content:'';width:30px;height:16px;border-top:2px solid rgba(255,255,255,.8);border-radius:50%;transform:rotate(-38deg);position:absolute}
+.ballicon:after{content:'';width:25px;height:13px;border-bottom:2px solid rgba(255,255,255,.7);border-radius:50%;transform:rotate(-38deg);position:absolute}
+.bubbleicon{width:31px;height:24px;border-radius:50%;background:#f2f5f6;color:#222;font-size:12px;font-weight:900;letter-spacing:1px;top:14px}
+.bubbleicon:after{content:'';position:absolute;left:4px;bottom:-6px;border-width:7px 8px 0 0;border-style:solid;border-color:#f2f5f6 transparent transparent transparent;transform:rotate(8deg)}
+.peopleicon{font-size:25px;color:#67b6e8;letter-spacing:-7px;width:32px;justify-content:flex-start}
+.gearicon{font-size:29px;color:#d9dfe2;text-shadow:0 1px 1px #000}
+.mottoExact{height:auto!important;margin:7px auto 5px!important;text-align:center!important;background:none!important}
+.mottoExact .m1{font-size:10px;font-weight:900;letter-spacing:4px;line-height:1.05;color:#f4f6f7}
+.mottoExact .m2{margin-top:3px;color:#ff8615;font-family:"Brush Script MT","Segoe Print","Comic Sans MS",cursive;font-style:italic;font-weight:900;font-size:23px;letter-spacing:-.5px;line-height:.98;white-space:nowrap}
+.mottoExact .mline{width:100px;height:4px;border-radius:50%;background:#ff8615;margin:4px auto 0;transform:rotate(-3deg)}
+@media(max-width:560px){
+  .homeGridExact{gap:8px!important;margin-top:8px!important}
+  .homeTileExact{aspect-ratio:321/146!important;min-height:0!important}
+  .vtitle{font-size:17px}
+  .vsub{font-size:11px}
+  .mottoExact{margin:6px auto 4px!important}
+  .mottoExact .m2{font-size:22px}
+}
+
 </style>
 </head>
 <body>
@@ -105,14 +145,14 @@ main{max-width:900px!important;margin:0 auto!important;padding:0 14px 16px!impor
   <div class="heroExact" aria-label="PadelVibes Banner"></div>
   <div class="welcomeExact"><h2>Hallo <span id="homeUserName">Rory</span> 👋</h2><p>Schön, dass du da bist!</p></div>
   <div class="homeGridExact">
-    <button class="homeTile homeTileExact tile1" data-go="table" aria-label="Liga"></button>
-    <button class="homeTile homeTileExact tile2" data-go="slots" aria-label="Slots"></button>
-    <button class="homeTile homeTileExact tile3" data-go="training" aria-label="Training"></button>
-    <button class="homeTile homeTileExact tile4" data-go="community" aria-label="Community"></button>
-    <button class="homeTile homeTileExact tile5" data-go="table" aria-label="Teams"></button>
-    <button class="homeTile homeTileExact tile6" data-go="admin" aria-label="Admin"></button>
+    <button class="homeTile homeTileExact tile1" data-go="table" aria-label="Liga"><span class="vicon trophy" aria-hidden="true">🏆</span><span class="vtitle">Liga</span><span class="vsub">Tabelle &amp; Ergebnisse</span><span class="varrow">›</span></button>
+    <button class="homeTile homeTileExact tile2" data-go="slots" aria-label="Slots"><span class="vicon gridicon" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="vtitle">Slots</span><span class="vsub">Courts buchen</span><span class="varrow">›</span></button>
+    <button class="homeTile homeTileExact tile3" data-go="training" aria-label="Training"><span class="vicon ballicon" aria-hidden="true">●</span><span class="vtitle">Training</span><span class="vsub">Training buchen</span><span class="varrow">›</span></button>
+    <button class="homeTile homeTileExact tile4" data-go="community" aria-label="Community"><span class="vicon bubbleicon" aria-hidden="true">•••</span><span class="vtitle">Community</span><span class="vsub">News &amp; Austausch</span><span class="varrow">›</span></button>
+    <button class="homeTile homeTileExact tile5" data-go="table" aria-label="Teams"><span class="vicon peopleicon" aria-hidden="true">♟♟</span><span class="vtitle">Teams</span><span class="vsub">Spieler &amp; Mannschaften</span><span class="varrow">›</span></button>
+    <button class="homeTile homeTileExact tile6" data-go="admin" aria-label="Admin"><span class="vicon gearicon" aria-hidden="true">⚙</span><span class="vtitle">Admin</span><span class="vsub">Verwaltung &amp; Einstellungen</span><span class="varrow">›</span></button>
   </div>
-  <div class="mottoExact"></div>
+  <div class="mottoExact"><div class="m1">GOOD PLAYERS PLAY.</div><div class="m2">GREAT PLAYERS INSPIRE.</div><div class="mline"></div></div>
   <div class="statsExact">
     <div class="statExact"><div class="statIconExact">♟</div><div class="statValueExact" id="teamCount">–</div><div class="statLabelExact">Teams in League A</div></div>
     <div class="statExact"><div class="statIconExact">▥</div><div class="statValueExact" id="played">–</div><div class="statLabelExact">Spiele gespielt</div></div>
