@@ -122,6 +122,12 @@ img,svg{image-rendering:auto}
 .homeTileExact,.welcomeExact,.statExact,.leagueBtn,.topBtn{transform:translateZ(0);backface-visibility:hidden}
 .vtitle,.vsub,.m1,.m2,.statValueExact,.statLabelExact{ -webkit-font-smoothing:antialiased; text-rendering:geometricPrecision }
 @media(max-width:560px){.mottoExact .m2{font-size:23px;letter-spacing:-.9px}}
+
+/* FINAL TYPOGRAPHY + PADEL RACKETS */
+.mottoExact .m1,.mottoExact .m2{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif!important;font-style:normal!important;text-rendering:geometricPrecision!important;-webkit-font-smoothing:antialiased!important}
+.mottoExact .m2{font-weight:900!important;letter-spacing:-.45px!important;font-size:22px!important;line-height:1!important;color:#ff8615!important}
+.racketsIcon{width:46px!important;height:34px!important;left:16px!important;top:11px!important}
+.racketsIcon svg{width:46px;height:34px;display:block;overflow:visible;shape-rendering:geometricPrecision}
 </style>
 </head>
 <body>
@@ -157,7 +163,19 @@ img,svg{image-rendering:auto}
     <button class="homeTile homeTileExact tile2" data-go="slots" aria-label="Slots"><span class="vicon gridicon" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="vtitle">Slots</span><span class="vsub">Courts buchen</span><span class="varrow">›</span></button>
     <button class="homeTile homeTileExact tile3" data-go="training" aria-label="Training"><span class="vicon ballicon" aria-hidden="true">●</span><span class="vtitle">Training</span><span class="vsub">Training buchen</span><span class="varrow">›</span></button>
     <button class="homeTile homeTileExact tile4" data-go="community" aria-label="Community"><span class="vicon bubbleicon" aria-hidden="true">•••</span><span class="vtitle">Community</span><span class="vsub">News &amp; Austausch</span><span class="varrow">›</span></button>
-    <button class="homeTile homeTileExact tile5" data-go="table" aria-label="Teams"><span class="vicon racketsIcon" aria-hidden="true"><span class="racket r1"></span><span class="racket r2"></span></span><span class="vtitle">Teams</span><span class="vsub">Spieler &amp; Mannschaften</span><span class="varrow">›</span></button>
+    <button class="homeTile homeTileExact tile5" data-go="table" aria-label="Teams"><span class="vicon racketsIcon" aria-hidden="true">
+<svg viewBox="0 0 56 42" role="img" aria-hidden="true">
+  <g transform="rotate(-38 18 15)">
+    <ellipse cx="18" cy="13" rx="10" ry="13" fill="none" stroke="#67b6e8" stroke-width="3"/>
+    <path d="M18 25 L18 40" stroke="#67b6e8" stroke-width="4" stroke-linecap="round"/>
+    <path d="M13 7 L23 19 M23 7 L13 19" stroke="#67b6e8" stroke-width="1" opacity=".65"/>
+  </g>
+  <g transform="rotate(38 38 15)">
+    <ellipse cx="38" cy="13" rx="10" ry="13" fill="none" stroke="#67b6e8" stroke-width="3"/>
+    <path d="M38 25 L38 40" stroke="#67b6e8" stroke-width="4" stroke-linecap="round"/>
+    <path d="M33 7 L43 19 M43 7 L33 19" stroke="#67b6e8" stroke-width="1" opacity=".65"/>
+  </g>
+</svg></span><span class="vtitle">Teams</span><span class="vsub">Spieler &amp; Mannschaften</span><span class="varrow">›</span></button>
     <button class="homeTile homeTileExact tile6" data-go="admin" aria-label="Admin"><span class="vicon gearicon" aria-hidden="true">⚙</span><span class="vtitle">Admin</span><span class="vsub">Verwaltung &amp; Einstellungen</span><span class="varrow">›</span></button>
   </div>
   <div class="mottoExact"><div class="m1">GOOD PLAYERS PLAY.</div><div class="m2">GREAT PLAYERS INSPIRE.</div><div class="mline"></div></div>
