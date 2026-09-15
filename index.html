@@ -100,7 +100,9 @@ main{max-width:900px!important;margin:0 auto!important;padding:0 14px 16px!impor
 .bubbleicon{width:31px;height:24px;border-radius:50%;background:#f2f5f6;color:#222;font-size:12px;font-weight:900;letter-spacing:1px;top:14px}
 .bubbleicon:after{content:'';position:absolute;left:4px;bottom:-6px;border-width:7px 8px 0 0;border-style:solid;border-color:#f2f5f6 transparent transparent transparent;transform:rotate(8deg)}
 .peopleicon{font-size:25px;color:#67b6e8;letter-spacing:-7px;width:32px;justify-content:flex-start}
-.gearicon{font-size:29px;color:#d9dfe2;text-shadow:0 1px 1px #000}
+.gearicon{font-size:29px;color:#d9dfe2;text-shadow:0 1px 1px #000}.racketsIcon{position:relative;width:42px;height:34px;display:block}.racketsIcon .racket{position:absolute;width:17px;height:24px;border:3px solid #67b6e8;border-radius:50%;top:0}.racketsIcon .racket:after{content:"";position:absolute;width:3px;height:13px;background:#67b6e8;left:5px;top:20px;transform:rotate(-38deg);transform-origin:top}.racketsIcon .r1{left:3px;transform:rotate(-38deg)}.racketsIcon .r2{left:20px;transform:rotate(38deg)}
+.mottoExact .m2{font-family:"Brush Script MT","Bradley Hand","Segoe Print",cursive;font-style:italic;font-weight:700;letter-spacing:-1.1px;font-size:24px;line-height:.95;text-shadow:0 0 0 #ff8615}
+
 .mottoExact{height:auto!important;margin:7px auto 5px!important;text-align:center!important;background:none!important}
 .mottoExact .m1{font-size:10px;font-weight:900;letter-spacing:4px;line-height:1.05;color:#f4f6f7}
 .mottoExact .m2{margin-top:3px;color:#ff8615;font-family:"Brush Script MT","Segoe Print","Comic Sans MS",cursive;font-style:italic;font-weight:900;font-size:23px;letter-spacing:-.5px;line-height:.98;white-space:nowrap}
@@ -114,6 +116,12 @@ main{max-width:900px!important;margin:0 auto!important;padding:0 14px 16px!impor
   .mottoExact .m2{font-size:22px}
 }
 
+
+/* FINAL SHARP UI OVERRIDES */
+img,svg{image-rendering:auto}
+.homeTileExact,.welcomeExact,.statExact,.leagueBtn,.topBtn{transform:translateZ(0);backface-visibility:hidden}
+.vtitle,.vsub,.m1,.m2,.statValueExact,.statLabelExact{ -webkit-font-smoothing:antialiased; text-rendering:geometricPrecision }
+@media(max-width:560px){.mottoExact .m2{font-size:23px;letter-spacing:-.9px}}
 </style>
 </head>
 <body>
@@ -149,7 +157,7 @@ main{max-width:900px!important;margin:0 auto!important;padding:0 14px 16px!impor
     <button class="homeTile homeTileExact tile2" data-go="slots" aria-label="Slots"><span class="vicon gridicon" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="vtitle">Slots</span><span class="vsub">Courts buchen</span><span class="varrow">›</span></button>
     <button class="homeTile homeTileExact tile3" data-go="training" aria-label="Training"><span class="vicon ballicon" aria-hidden="true">●</span><span class="vtitle">Training</span><span class="vsub">Training buchen</span><span class="varrow">›</span></button>
     <button class="homeTile homeTileExact tile4" data-go="community" aria-label="Community"><span class="vicon bubbleicon" aria-hidden="true">•••</span><span class="vtitle">Community</span><span class="vsub">News &amp; Austausch</span><span class="varrow">›</span></button>
-    <button class="homeTile homeTileExact tile5" data-go="table" aria-label="Teams"><span class="vicon peopleicon" aria-hidden="true">♟♟</span><span class="vtitle">Teams</span><span class="vsub">Spieler &amp; Mannschaften</span><span class="varrow">›</span></button>
+    <button class="homeTile homeTileExact tile5" data-go="table" aria-label="Teams"><span class="vicon racketsIcon" aria-hidden="true"><span class="racket r1"></span><span class="racket r2"></span></span><span class="vtitle">Teams</span><span class="vsub">Spieler &amp; Mannschaften</span><span class="varrow">›</span></button>
     <button class="homeTile homeTileExact tile6" data-go="admin" aria-label="Admin"><span class="vicon gearicon" aria-hidden="true">⚙</span><span class="vtitle">Admin</span><span class="vsub">Verwaltung &amp; Einstellungen</span><span class="varrow">›</span></button>
   </div>
   <div class="mottoExact"><div class="m1">GOOD PLAYERS PLAY.</div><div class="m2">GREAT PLAYERS INSPIRE.</div><div class="mline"></div></div>
