@@ -175,14 +175,15 @@ img,svg{image-rendering:auto}
       <span class="vsub">Schön, dass du da bist!</span>
       <span class="varrow">›</span>
     </button>
-    <button onclick="window.location.href='https://www.twitch.tv/padelvibesliga'" class="homeTile homeTileExact twitchTile" id="twitchTile" data-twitch-url="" aria-label="Twitch Live dabei sein">
+    <button class="homeTile homeTileExact twitchTile" id="twitchTile" data-twitch-url="https://www.twitch.tv/padelvibesliga" aria-label="Twitch Live dabei sein">
       <span class="vicon twitchIcon" aria-hidden="true">
         <svg viewBox="0 0 32 32"><path d="M6 3h24v19H19l-6 6v-6H6z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M13 9v7M20 9v7" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
       </span>
       <span class="vtitle">Twitch</span>
       <span class="vsub">Live dabei sein</span>
       <span class="varrow">›</span>
-    </button>-label="Liga">
+    </button>
+    <button class="homeTile homeTileExact tile1" data-go="table" aria-label="Liga">
       <span class="vicon trophy" aria-hidden="true">🏆</span>
       <span class="vtitle">Liga</span>
       <span class="vsub">Tabelle &amp; Ergebnisse</span>
@@ -371,14 +372,10 @@ async function saveTeam(id){const p1=document.querySelector(`[data-p1="${id}"]`)
 async function saveResult(id){const score=document.getElementById("score-"+id).value.trim(),winner=document.getElementById("winner-"+id).value||null;const {error}=await sb.from("matches").update({score_text:score||null,winner_team_id:winner,home_score:winner?1:null,away_score:winner?1:null,updated_at:new Date().toISOString()}).eq("id",id);if(error)return alert(error.message);const {error:vibesError}=await sb.rpc("recalculate_vibes_levels");if(vibesError)return alert("Ergebnis gespeichert, aber Vibes Level konnte nicht aktualisiert werden: "+vibesError.message);await load();await refreshAdmin();if(document.getElementById("vibes").classList.contains("active"))await loadVibesLevels();alert("Ergebnis und Vibes Level gespeichert.")}
 const twitchTile=document.getElementById("twitchTile");
 if(twitchTile){
-  twitchTile.onclick=()=>{
-    const url=(twitchTile.dataset.twitchUrl||"").trim();
-    if(!url){
-      alert("Der Twitch-Kanal ist noch nicht verknüpft.");
-      return;
-    }
-    window.open(url,"_blank","noopener,noreferrer");
-  };
+  twitchTile.addEventListener("click",()=>{
+    const url=(twitchTile.dataset.twitchUrl||"https://www.twitch.tv/padelvibesliga").trim();
+    window.location.href=url;
+  });
 }
 document.getElementById("postBtn").onclick=createPost;document.getElementById("refreshCommunityBtn").onclick=loadCommunity;document.getElementById("refreshSlotsBtn").onclick=loadSlots;
 document.getElementById("loginBtn").onclick=async()=>{const email=document.getElementById("email").value.trim(),password=document.getElementById("password").value,{error}=await sb.auth.signInWithPassword({email,password});document.getElementById("loginMsg").textContent=error?error.message:"Eingeloggt.";if(!error)refreshAdmin()};
