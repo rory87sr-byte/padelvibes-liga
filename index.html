@@ -123,6 +123,16 @@ img,svg{image-rendering:auto}
 .vtitle,.vsub,.m1,.m2,.statValueExact,.statLabelExact{ -webkit-font-smoothing:antialiased; text-rendering:geometricPrecision }
 @media(max-width:560px){.mottoExact .m2{font-size:23px;letter-spacing:-.9px}}
 
+/* === TWITCH HOME TILE === */
+.twitchTile{cursor:pointer}
+.twitchIcon{width:34px;height:34px;color:#9146ff!important;left:17px!important;top:11px!important}
+.twitchIcon svg{width:34px;height:34px;display:block}
+.welcomeTile .vicon{font-size:27px}
+.welcomeTile .vtitle{font-size:17px}
+.welcomeTile .vsub{font-size:11px}
+@media(max-width:560px){
+  .twitchIcon{left:17px!important;top:11px!important}
+}
 /* FINAL TYPOGRAPHY + PADEL RACKETS */
 .mottoExact .m1,.mottoExact .m2{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif!important;font-style:normal!important;text-rendering:geometricPrecision!important;-webkit-font-smoothing:antialiased!important}
 .mottoExact .m2{font-weight:900!important;letter-spacing:-.45px!important;font-size:22px!important;line-height:1!important;color:#ff8615!important}
@@ -158,9 +168,22 @@ img,svg{image-rendering:auto}
 <main>
 <section id="home" class="page active">
   <div class="heroExact" aria-label="PadelVibes Banner"></div>
-  <div class="welcomeExact"><h2>Hallo <span id="homeUserName">Rory</span> 👋</h2><p>Schön, dass du da bist!</p></div>
   <div class="homeGridExact">
-    <button class="homeTile homeTileExact tile1" data-go="table" aria-label="Liga"><span class="vicon trophy" aria-hidden="true">🏆</span><span class="vtitle">Liga</span><span class="vsub">Tabelle &amp; Ergebnisse</span><span class="varrow">›</span></button>
+    <button class="homeTile homeTileExact welcomeTile" data-go="home" aria-label="Hallo Rory">
+      <span class="vicon" aria-hidden="true">👋</span>
+      <span class="vtitle">Hallo <span id="homeUserName">Rory</span></span>
+      <span class="vsub">Schön, dass du da bist!</span>
+      <span class="varrow">›</span>
+    </button>
+    <button class="homeTile homeTileExact twitchTile" id="twitchTile" data-twitch-url="" aria-label="Twitch Live dabei sein">
+      <span class="vicon twitchIcon" aria-hidden="true">
+        <svg viewBox="0 0 32 32"><path d="M6 3h24v19H19l-6 6v-6H6z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M13 9v7M20 9v7" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+      </span>
+      <span class="vtitle">Twitch</span>
+      <span class="vsub">Live dabei sein</span>
+      <span class="varrow">›</span>
+    </button>
+<span class="vicon trophy" aria-hidden="true">🏆</span><span class="vtitle">Liga</span><span class="vsub">Tabelle &amp; Ergebnisse</span><span class="varrow">›</span></button>
     <button class="homeTile homeTileExact tile2" data-go="slots" aria-label="Slots"><span class="vicon gridicon" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="vtitle">Slots</span><span class="vsub">Courts buchen</span><span class="varrow">›</span></button>
     <button class="homeTile homeTileExact tile3" data-go="training" aria-label="Training"><span class="vicon ballicon" aria-hidden="true">●</span><span class="vtitle">Training</span><span class="vsub">Training buchen</span><span class="varrow">›</span></button>
     <button class="homeTile homeTileExact tile4" data-go="community" aria-label="Community"><span class="vicon bubbleicon" aria-hidden="true">•••</span><span class="vtitle">Community</span><span class="vsub">News &amp; Austausch</span><span class="varrow">›</span></button>
@@ -233,7 +256,7 @@ const played=matches.filter(m=>m.winner_team_id).length;document.getElementById(
 const upcoming=matches.filter(m=>!m.winner_team_id).slice(0,4);const homeMatches=document.getElementById("homeMatches");if(homeMatches)homeMatches.innerHTML=upcoming.length?upcoming.map(m=>`<div class="match"><div class="team">${esc(tn(m.home_team_id))}</div><div class="score">ST ${m.matchday}</div><div class="team away">${esc(tn(m.away_team_id))}</div></div>`).join(""):"Alle Spiele sind eingetragen.";
 const days={};matches.forEach(m=>(days[m.matchday]??=[]).push(m));document.getElementById("matchdays").innerHTML=Object.entries(days).map(([d,ms])=>`<div class="card"><h3>Spieltag ${d}</h3>${ms.map(matchHtml).join("")}</div>`).join("");
 const rows=teams.map(t=>{const mm=matches.filter(m=>m.home_team_id===t.id||m.away_team_id===t.id),wins=mm.filter(m=>m.winner_team_id===t.id).length,losses=mm.filter(m=>m.winner_team_id&&m.winner_team_id!==t.id).length;return {...t,played:wins+losses,wins,losses,points:wins*3}}).sort((a,b)=>b.points-a.points||b.wins-a.wins||a.position-b.position);
-document.getElementById("standings").innerHTML=rows.map((t,i)=>{const pos=i+1;let cls="",label="";if(currentLeague==="League A"){if(pos<=4){cls="playoff";label="Playoff"}else if(pos>=9){cls="relegation";label="Abstieg"}}else if(currentLeague==="League B"){if(pos<=2){cls="promotion";label="Aufstieg"}else if(pos>=8){cls="relegation";label="Abstieg"}}else{if(pos<=2){cls="promotion";label="Aufstieg"}else if(pos>=8){cls="bottom";label="Schlussbereich"}}return `<tr class="${cls}"><td><b>${pos}</b></td><td><b>${esc(t.name)}</b> <b class="${Number(t.vibes_level??0)>=6?"vibesLevelGreen":Number(t.vibes_level??0)>=4?"vibesLevelYellow":"vibesLevelRed"}">${Number(t.vibes_level??0).toFixed(1)}</b><div class="players">${esc(t.player1||"")}${t.player2?" · "+esc(t.player2):""}${label?" · "+label:""}</div></td><td>${t.played}</td><td>${t.wins}</td><td>${t.losses}</td><td><b>${t.points}</b></td></tr>`}).join("");
+document.getElementById("standings").innerHTML=rows.map((t,i)=>{const pos=i+1;let cls="",label="";if(currentLeague==="League A"){if(pos<=4){cls="playoff";label="Playoff"}else if(pos>=9){cls="relegation";label="Abstieg"}}else if(currentLeague==="League B"){if(pos<=2){cls="promotion";label="Aufstieg"}else if(pos>=8){cls="relegation";label="Abstieg"}}else{if(pos<=2){cls="promotion";label="Aufstieg"}else if(pos>=8){cls="bottom";label="Schlussbereich"}}return `<tr class="${cls}"><td><b>${pos}</b></td><td><b>${esc(t.name)}</b><div class="players">${esc(t.player1||"")}${t.player2?" · "+esc(t.player2):""}${label?" · "+label:""}</div></td><td>${t.played}</td><td>${t.wins}</td><td>${t.losses}</td><td><b>${t.points}</b></td></tr>`}).join("");
 document.getElementById("greenLegend").textContent=currentLeague==="League A"?"Platz 1–4 · Playoffs":"Platz 1–2 · Aufstieg";document.getElementById("grayLegend").textContent=currentLeague==="League C"?"Platz 8–9 · Schlussbereich":"Normale Tabellenplätze";
 }
 function matchHtml(m){return `<div class="match"><div class="team ${m.winner_team_id===m.home_team_id?"win":""}">${esc(tn(m.home_team_id))}</div><div class="score">${m.score_text?esc(m.score_text):"–"}</div><div class="team away ${m.winner_team_id===m.away_team_id?"win":""}">${esc(tn(m.away_team_id))}</div></div>`}
@@ -342,6 +365,17 @@ async function loadRegisteredUsers(){const box=document.getElementById("register
 async function saveUserName(id){const input=document.querySelector(`[data-user-name="${id}"]`),name=input?.value.trim();if(!name){alert("Bitte einen Namen eintragen.");return}const {data,error}=await sb.rpc("admin_set_user_name",{p_user_id:id,p_full_name:name});if(error){alert("Name konnte nicht gespeichert werden: "+error.message);return}if(!data){alert("Der Name konnte nicht geändert werden.");return}alert("Name gespeichert.");await loadRegisteredUsers()}
 async function saveTeam(id){const p1=document.querySelector(`[data-p1="${id}"]`).value.trim(),p2=document.querySelector(`[data-p2="${id}"]`).value.trim();if(!p1||!p2)return alert("Beide Spielernamen eintragen.");const {error}=await sb.from("teams").update({player1:p1,player2:p2}).eq("id",id);if(error)return alert(error.message);await load();await refreshAdmin();alert("Team gespeichert.")}
 async function saveResult(id){const score=document.getElementById("score-"+id).value.trim(),winner=document.getElementById("winner-"+id).value||null;const {error}=await sb.from("matches").update({score_text:score||null,winner_team_id:winner,home_score:winner?1:null,away_score:winner?1:null,updated_at:new Date().toISOString()}).eq("id",id);if(error)return alert(error.message);const {error:vibesError}=await sb.rpc("recalculate_vibes_levels");if(vibesError)return alert("Ergebnis gespeichert, aber Vibes Level konnte nicht aktualisiert werden: "+vibesError.message);await load();await refreshAdmin();if(document.getElementById("vibes").classList.contains("active"))await loadVibesLevels();alert("Ergebnis und Vibes Level gespeichert.")}
+const twitchTile=document.getElementById("twitchTile");
+if(twitchTile){
+  twitchTile.onclick=()=>{
+    const url=(twitchTile.dataset.twitchUrl||"").trim();
+    if(!url){
+      alert("Der Twitch-Kanal ist noch nicht verknüpft.");
+      return;
+    }
+    window.open(url,"_blank","noopener,noreferrer");
+  };
+}
 document.getElementById("postBtn").onclick=createPost;document.getElementById("refreshCommunityBtn").onclick=loadCommunity;document.getElementById("refreshSlotsBtn").onclick=loadSlots;
 document.getElementById("loginBtn").onclick=async()=>{const email=document.getElementById("email").value.trim(),password=document.getElementById("password").value,{error}=await sb.auth.signInWithPassword({email,password});document.getElementById("loginMsg").textContent=error?error.message:"Eingeloggt.";if(!error)refreshAdmin()};
 document.getElementById("logoutBtn").onclick=async()=>{await sb.auth.signOut()};
