@@ -146,17 +146,17 @@ img,svg{image-rendering:auto}
   <div class="authCard">
     <div class="authLogo">🎾 Padel<span>Vibes</span> Liga</div>
     <div class="authTag">Deine Liga. Deine Matches. Deine Vibes.</div>
-    <div class="authTabs"><button class="btn authTab active" id="authLoginTab">Einloggen</button><button class="btn authTab" id="authSignupTab">Registrieren</button></div>
+    <div class="authTabs"><button type="button" class="btn authTab active" id="authLoginTab">Einloggen</button><button type="button" class="btn authTab" id="authSignupTab">Registrieren</button></div>
     <div id="loginForm">
       <label>E-Mail</label><input id="authEmail" type="email" autocomplete="email" placeholder="deine@email.de">
       <label>Passwort</label><input id="authPassword" type="password" autocomplete="current-password" placeholder="••••••••">
-      <div class="actions"><button class="btn primary" id="authLoginBtn">Einloggen</button><button class="btn" id="authResetBtn">Passwort vergessen</button></div>
+      <div class="actions"><button type="button" class="btn primary" id="authLoginBtn">Einloggen</button><button type="button" class="btn" id="authResetBtn">Passwort vergessen</button></div>
     </div>
     <div id="signupForm" class="hidden">
       <label>Dein Name</label><input id="authName" autocomplete="name" placeholder="z.B. Simon Rohrpasser">
       <label>E-Mail</label><input id="authSignupEmail" type="email" autocomplete="email" placeholder="deine@email.de">
       <label>Passwort</label><input id="authSignupPassword" type="password" autocomplete="new-password" placeholder="mindestens 6 Zeichen">
-      <div class="actions"><button class="btn primary" id="authSignupBtn">Konto erstellen</button></div>
+      <div class="actions"><button type="button" class="btn primary" id="authSignupBtn">Konto erstellen</button></div>
       <div class="small">Nach der E-Mail-Bestätigung muss dein Zugang zuerst vom Admin freigegeben werden.</div>
     </div>
     <div id="authMsg" class="authMsg small"></div>
@@ -167,7 +167,7 @@ img,svg{image-rendering:auto}
     <div class="authLogo">🎾 Padel<span>Vibes</span> Liga</div>
     <div class="authTag">Registrierung wartet auf Freigabe</div>
     <div class="notice" style="margin-top:14px">Deine Registrierung wurde erfolgreich angelegt. <b>Der Admin muss deinen Zugang noch freigeben.</b><br>Sobald du freigeschaltet wurdest, kannst du dich einloggen.</div>
-    <div class="actions"><button class="btn" id="pendingLogoutBtn">Ausloggen</button></div>
+    <div class="actions"><button type="button" class="btn" id="pendingLogoutBtn">Ausloggen</button></div>
   </div>
 </div>
 <div id="appShell" class="hidden">
@@ -243,6 +243,47 @@ img,svg{image-rendering:auto}
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+// PadelVibes robust startup: if the primary Supabase CDN is unavailable, load a fallback.
+async function ensureSupabase(){
+  if(window.supabase && typeof window.supabase.createClient === "function") return true;
+  return await new Promise(resolve=>{
+    const s=document.createElement("script");
+    s.src="https://unpkg.com/@supabase/supabase-js@2";
+    s.onload=()=>resolve(!!(window.supabase && typeof window.supabase.createClient === "function"));
+    s.onerror=()=>resolve(false);
+    document.head.appendChild(s);
+  });
+}
+
+// These two tabs must remain usable even if a network/API script has a problem.
+function bindAuthTabsEarly(){
+  const loginTab=document.getElementById("authLoginTab");
+  const signupTab=document.getElementById("authSignupTab");
+  const loginForm=document.getElementById("loginForm");
+  const signupForm=document.getElementById("signupForm");
+  if(loginTab) loginTab.type="button";
+  if(signupTab) signupTab.type="button";
+  const show=(mode)=>{
+    const login=mode==="login";
+    if(loginForm) loginForm.classList.toggle("hidden",!login);
+    if(signupForm) signupForm.classList.toggle("hidden",login);
+    if(loginTab) loginTab.classList.toggle("active",login);
+    if(signupTab) signupTab.classList.toggle("active",!login);
+  };
+  if(loginTab) loginTab.addEventListener("click",()=>show("login"));
+  if(signupTab) signupTab.addEventListener("click",()=>show("signup"));
+}
+bindAuthTabsEarly();
+
+(async()=>{
+const supabaseReady=await ensureSupabase();
+if(!supabaseReady){
+  const msg=document.getElementById("authMsg");
+  if(msg) msg.textContent="Verbindung zum Anmeldeserver konnte nicht geladen werden. Bitte Internetverbindung prüfen und App neu laden.";
+  const ids=["authLoginBtn","authSignupBtn","authResetBtn"];
+  ids.forEach(id=>{const b=document.getElementById(id);if(b)b.type="button";});
+  return;
+}
 const SUPABASE_URL="https://leouoxzaorxnhjjvliyt.supabase.co",SUPABASE_KEY="sb_publishable_PyiqqmUKl_ejecuWYswVsw_tf8qdOzy",sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 let teams=[],matches=[],league=null,isAdmin=false,currentLeague="League A",allLeagues=[],allSlots=[],trainingBookings=[],currentUser=null;
 const nav=[...document.querySelectorAll("nav button")];
@@ -423,4 +464,6 @@ document.getElementById("authLoginBtn").onclick=async()=>{const email=document.g
 document.getElementById("authSignupBtn").onclick=async()=>{const name=document.getElementById("authName").value.trim(),email=document.getElementById("authSignupEmail").value.trim(),password=document.getElementById("authSignupPassword").value;if(!name||!email||!password){showAuthMessage("Bitte Name, E-Mail und Passwort ausfüllen.");return}if(password.length<6){showAuthMessage("Das Passwort muss mindestens 6 Zeichen haben.");return}showAuthMessage("Konto wird erstellt …");const {data,error}=await sb.auth.signUp({email,password,options:{data:{full_name:name}}});if(error){showAuthMessage(error.message);return}if(data.session&&data.user){showAuthMessage("Konto erstellt. Dein Zugang wartet jetzt auf die Freigabe durch den Admin.",true);await handleAuthState(data.user)}else{showAuthMessage("Konto erstellt. Bitte bestätige zuerst deine E-Mail-Adresse. Danach muss dein Zugang noch vom Admin freigegeben werden.",true);switchAuth("login")}};
 document.getElementById("authResetBtn").onclick=async()=>{const email=document.getElementById("authEmail").value.trim();if(!email){showAuthMessage("Bitte zuerst deine E-Mail-Adresse eingeben.");return}const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin});showAuthMessage(error?error.message:"Wir haben dir eine E-Mail zum Zurücksetzen des Passworts geschickt.",!error)};
 document.getElementById("pendingLogoutBtn").onclick=async()=>{await sb.auth.signOut()}; sb.auth.onAuthStateChange((event,session)=>{setTimeout(()=>handleAuthState(session?.user||null),0)});sb.auth.getSession().then(({data})=>handleAuthState(data.session?.user||null));
+
+})();
 </script></body></html>
