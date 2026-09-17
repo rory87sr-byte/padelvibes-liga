@@ -417,7 +417,7 @@ async function handleAuthState(user){
   if(!currentUser){
     auth.classList.remove("hidden"); pending.classList.add("hidden"); app.classList.add("hidden"); isAdmin=false; return;
   }
-  const {data:p,error:profileError}=await sb.from("profiles").select("role,approved,full_name").eq("id",currentUser.id).maybeSingle();
+  const {data:p,error:profileError}=await sb.from("profiles").select("role,approved").eq("id",currentUser.id).maybeSingle();
   if(profileError){
     auth.classList.remove("hidden"); pending.classList.add("hidden"); app.classList.add("hidden");
     showAuthMessage("Profil konnte nicht geprüft werden: "+profileError.message); return;
